@@ -1,0 +1,10 @@
+.centerOfPage {
+  margin-top: 20%;
+  height: 50%;
+  min-height: 50%;
+}
+
+.loginBox {
+  box-shadow: 0px 0px 19px 8px rgb(162, 163, 175);
+  border-radius: 25px;
+}
