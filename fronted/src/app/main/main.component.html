@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg bg-light" [hidden]="!logged">
+  <div class="container-lg">
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/landing">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link">Devices</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/account">Account</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

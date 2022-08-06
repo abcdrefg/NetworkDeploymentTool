@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from bson.objectid import ObjectId
 class DatabaseConnection:
 
     client = MongoClient("mongodb://localhost:27017/")
@@ -22,10 +22,12 @@ class DatabaseConnection:
     def check_password(self, passwordHash, password):
         return check_password_hash(passwordHash, password)
 
-    def change_password(self, login, password):
+    def change_password(self, id, oldPassword, newPassword):
         collection = self.database_name[self.user_collection]
-        user = collection.find_one({"username": login})
-        print(generate_password_hash(password))
-        newUser = {"$set": { "password": generate_password_hash(password)}}
-        collection.update_one(user, newUser)
+        user = collection.find_one({"_id": ObjectId(id)})
+        if not (self.check_password(user.get('password'), oldPassword)):
+            return False
+        newUser = {"$set": { "password": generate_password_hash(newPassword)}}
+        updateResult = collection.update_one(user, newUser) #toRead
+        return True
 
