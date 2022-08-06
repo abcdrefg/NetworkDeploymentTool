@@ -1,1 +1,16 @@
-<h4>account</h4>
+<div class="container-lg">
+  <div class=" align-items-center">
+    <div
+      class="col-lg-12 d-flex flex-column align-items-center p-5"
+    >
+      <div class="row"><h4 class="lead">Account Id: {{token}}</h4></div>
+      <div class="row mt-5"><h2>Change password</h2></div>
+      <div class="row fixedWidth mt-5"><label class="form-label">Current password   </label>
+      <input type="Current password" class="form-control" [(ngModel)]="currentPassword" /></div>
+      <div class="row fixedWidth"><label class="form-label">New password       </label>
+      <input type="New password" class="form-control" [(ngModel)]="newPassword" /></div>
+      <div class="row fixedWidth"><label class="form-label">Repeat new password</label>
+      <input type="Repeat new password" class="form-control" [(ngModel)]="newPasswordRepeated" /></div>
+      <div class="row mt-5"><button class="btn btn-secondary" (click)="changePassword()">Change</button></div>
+  </div>
+</div>

@@ -12,14 +12,16 @@ import { LandingComponent } from './landing/landing.component';
 import { AuthService } from './auth.service';
 import { AccountComponent } from './account/account.component';
 import { AuthGuard } from './auth.guard';
-
+import { AccountService } from './account.service';
+import { DevicesPageComponent } from './devices-page/devices-page.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MainComponent,
     LandingComponent,
-    AccountComponent
+    AccountComponent,
+    DevicesPageComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,7 @@ import { AuthGuard } from './auth.guard';
     FormsModule,
     HttpClientModule
   ],
-  providers: [CookieService, AuthService, AuthGuard],
+  providers: [CookieService, AuthService, AuthGuard, AccountService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
