@@ -1,1 +1,82 @@
-<p>devices-page works!</p>
+<div class="container-lg" style="max-height: 720px">
+    <div class="row" style="max-height: 100%">
+        <div class="col-lg-3 d-flex flex-column p-4 m-1 overflow-auto" style="max-height: 720px; overflow-y:hidden">
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="row">czyś czyś</div>
+            <div class="row">elo</div>
+            <div class="align-items-center mt-3">
+                <button type="button" class="btn btn-primary" (click)="open(addDeviceModal)">Add device</button>
+            </div>
+        </div>
+        <div class="col-lg-4 d-flex flex-column p-4">
+            <div class="row">test</div>
+        </div>
+    </div>
+</div>
+
+<ng-template #addDeviceModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add device</h4>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')">
+      </button>
+    </div>
+    <div class="modal-body d-flex justify-content-center flex-column align-items-center">
+      <label class="form-label">Device Type</label>
+      <select class="form-select" [(ngModel)]="deviceType">
+        <option value="Router">Router</option>
+        <option value="Switch">Switch</option>
+      </select>
+      <label class="form-label">Device Name</label>
+      <input class="form-control" [(ngModel)]="deviceName" />
+      <label class="form-label">Username</label>
+      <input class="form-control" [(ngModel)]="username" />
+      <label class="form-label">Password</label>
+      <input class="form-control" [(ngModel)]="password" />
+      <label class="form-label">Host</label>
+      <input class="form-control" [(ngModel)]="host" />
+      <label class="form-label">Secret</label>
+      <input class="form-control" [(ngModel)]="secret" />
+    </div>
+    <div class="modal-footer">
+      <button type="button" [hidden]="isLoading" class="btn btn-outline-dark" (click)="trySaveDevice()">Save device</button>
+      <button type="button" [hidden]="!isLoading" class="btn btn-outline-dark">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ngb-toast *ngIf="showSuccess" header="Successfully added" [autohide]="true" (hidden)="showSuccess=false">
+    Device has been added to database
+  </ngb-toast>
+  <ngb-toast *ngIf="showError" header="Error during adding process" [autohide]="true" (hidden)="showError=false">
+    Given data is probably wrong or device is unreachable
+  </ngb-toast>
