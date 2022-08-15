@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from DatabaseConnection import DatabaseConnection
+
 account_controller = Blueprint('account_controller', __name__)
+
 
 class AccountServices:
     @account_controller.route('/changePassword', methods=['POST'])

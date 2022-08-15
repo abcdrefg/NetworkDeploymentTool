@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from DatabaseConnection import DatabaseConnection
+
 user_auth = Blueprint('user_auth', __name__)
+
 
 class User_authenticator:
     @user_auth.route('/authenticate', methods=['POST'])
@@ -18,10 +20,10 @@ class User_authenticator:
             return bad_request
         database_cursor = DatabaseConnection()
         if database_cursor.get_users(json_data["login"], json_data["password"]):
-
-            return jsonify({'login': json_data["login"], 'token': str(database_cursor.get_users(json_data["login"], json_data["password"]))})
+            return jsonify({'login': json_data["login"],
+                            'token': str(database_cursor.get_users(json_data["login"], json_data["password"]))})
         return {
-                'message': "Wrong Credentials",
-                'status': 400,
-                'Error': 'Unexpected error.',
-            }, 400
+                   'message': "Wrong Credentials",
+                   'status': 400,
+                   'Error': 'Unexpected error.',
+               }, 400
