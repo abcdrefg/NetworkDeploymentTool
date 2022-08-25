@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import {NgbModal, NgbModalOptions, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
 import { DeviceService } from '../device.service';
 import { DeviceInfoWrapper } from '../device.service';
 declare var window: any;
@@ -21,6 +22,8 @@ export class DevicesPageComponent implements OnInit {
   secret: string = '';
   deviceType: string = 'Router';
   deviceName: string = '';
+  currentConfig: string = '';
+  deviceConfigs: RunningConfig[] = [];
   isLoading: boolean = false;
   showSuccess = false;
   showError = false;
@@ -33,6 +36,7 @@ export class DevicesPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getRunningConfigs(this.devices);
   }
 
   open(content: any) {
@@ -41,6 +45,12 @@ export class DevicesPageComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  showConfig(name: string) {
+    this.currentConfig = this.deviceConfigs.filter((device) => {
+      return device.name == name;
+    })[0].config;
   }
 
   private getDismissReason(reason: any): string {
@@ -77,14 +87,20 @@ export class DevicesPageComponent implements OnInit {
       });
   }
 
-  getRunningConfigs(devices: Array<string>): void {
+  getRunningConfigs(devices: Array<string>) {
     this.deviceService.getDevices(devices).subscribe(
-      (deviceConfigs) => {
-        console.log(deviceConfigs);
+      (deviceConfigsData) => {
+        this.deviceConfigs = deviceConfigsData;
       },
       (error) => {
-        console.log("ERRRRRRRROOOORR", error);
+        console.log("ERORR", error);
       }
     )
   } 
+}
+
+export interface RunningConfig {
+  name: string;
+  host: string;
+  config: string;
 }

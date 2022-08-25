@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { RunningConfig } from './devices-page/devices-page.component';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +18,8 @@ export class DeviceService {
     );
   }
 
-  getDevices(devices: Array<string>) {
-    return this.httpClient.post(
+  getDevices(devices: Array<string>): Observable<RunningConfig[]> {
+    return this.httpClient.post<RunningConfig[]>(
       this.backendServerAddress + '/deviceController/getRunningConfigs',
       devices)
   }

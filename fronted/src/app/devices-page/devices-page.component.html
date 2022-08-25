@@ -1,44 +1,13 @@
-<div class="container-lg" style="max-height: 720px">
+<div class="container-lg justify-content-center" style="max-height: 720px">
     <div class="row" style="max-height: 100%">
-        <div class="col-lg-3 d-flex flex-column p-4 m-1 overflow-auto" style="max-height: 720px; overflow-y:hidden">
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
-            <div class="row">czyś czyś</div>
-            <div class="row">elo</div>
+        <div class="col-lg-3 d-flex flex-column p-4 m-1 overflow-auto justify-content-center" style="max-height: 720px; overflow-y:hidden;">  
+            <button class="row deviceButton" *ngFor="let device of deviceConfigs" (click)="showConfig(device.name)"><h4>{{device.name}} <small class="text-muted"> {{device.host}}</small></h4></button>
             <div class="align-items-center mt-3">
                 <button type="button" class="btn btn-primary" (click)="open(addDeviceModal)">Add device</button>
             </div>
         </div>
         <div class="col-lg-4 d-flex flex-column p-4">
-            <div class="row">test</div>
+            <div class="row">{{currentConfig}}</div>
         </div>
     </div>
 </div>
@@ -72,11 +41,11 @@
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       </button>
     </div>
-  </ng-template>
+</ng-template>
 
-  <ngb-toast *ngIf="showSuccess" header="Successfully added" [autohide]="true" (hidden)="showSuccess=false">
-    Device has been added to database
-  </ngb-toast>
-  <ngb-toast *ngIf="showError" header="Error during adding process" [autohide]="true" (hidden)="showError=false">
-    Given data is probably wrong or device is unreachable
-  </ngb-toast>
+<ngb-toast class="bg-success bottom-0 end-0 postion-fixed" *ngIf="showSuccess" header="Successfully added" [autohide]="true" (hidden)="showSuccess=false">
+  Device has been added to database
+</ngb-toast>
+<ngb-toast class="bg-danger bottom-0 end-0 postion-fixed" *ngIf="showError" header="Error during adding process" [autohide]="true" (hidden)="showError=false">
+  Given data is probably wrong or device is unreachable
+</ngb-toast>

@@ -11,7 +11,20 @@
     border-radius: 5px;   
 }
 
-::-webkit-scrollbar-thumb:hover{
+::-webkit-scrollbar-thumb:hover {
     background: #555;
     border-radius: 5px;   
+}
+
+.deviceButton {
+    border: 1px;
+    border-radius: 3px;
+    border-color: black;
+    border-style: solid;
+    width: 100%;
+    height: 75px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    padding: 5px;
 }
