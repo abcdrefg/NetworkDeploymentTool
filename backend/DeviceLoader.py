@@ -57,20 +57,23 @@ def check_connection(connection_wrapper):
         return False
 
 def get_running_config(connection_wrapper):
-    conn = ConnectHandler(device_type=connection_wrapper.device_type,
-                          host=connection_wrapper.host,
-                          username=connection_wrapper.username,
-                          password=connection_wrapper.password,
-                          secret=connection_wrapper.secret)
-    conn.enable()
-    return conn.send_command("sh run")
+    try:
+        conn = ConnectHandler(device_type=connection_wrapper.device_type,
+        host=connection_wrapper.host,
+        username=connection_wrapper.username,
+        password=connection_wrapper.password,
+        secret=connection_wrapper.secret)
+        conn.enable()
+        return conn.send_command("sh run")
+    except:
+        return "Can't reach the device"
+
 
 def get_devices_running_confs(device_confs):
     running_configs = []
     for device_conf in device_confs:
         conn_wrapper = ConnectionWrapper(device_conf)
-        running_configs.append(get_running_config(conn_wrapper))
-    print(running_configs)
+        running_configs.append(ConfigsWrapper(conn_wrapper.name, conn_wrapper.host, get_running_config(conn_wrapper).replace("Building configuration...\n\n", "")).__dict__)
     return running_configs
 
 class ConnectionWrapper:
@@ -81,3 +84,9 @@ class ConnectionWrapper:
         self.password = device_dict["password"]
         self.secret = device_dict["secret"]
         self.name = device_dict["name"]
+
+class ConfigsWrapper:
+    def __init__(self, device_name, device_host, device_config):
+        self.name = device_name
+        self.host = device_host
+        self.config = device_config
