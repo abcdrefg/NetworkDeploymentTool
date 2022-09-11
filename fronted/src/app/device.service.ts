@@ -18,10 +18,9 @@ export class DeviceService {
     );
   }
 
-  getDevices(devices: Array<string>): Observable<RunningConfig[]> {
-    return this.httpClient.post<RunningConfig[]>(
-      this.backendServerAddress + '/deviceController/getRunningConfigs',
-      devices)
+  getDevices(): Observable<RunningConfig[]> {
+    return this.httpClient.get<RunningConfig[]>(
+      this.backendServerAddress + '/deviceController/getRunningConfigs')
   }
 }
 

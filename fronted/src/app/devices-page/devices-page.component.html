@@ -1,14 +1,26 @@
 <div class="container-lg justify-content-center" style="max-height: 720px">
+    <div class="spinner-border mt-4 justify-content-center align-items-center" role="status" [hidden]="!isFetchingDevices"><span class="visually-hidden">Loading...</span></div>
     <div class="row" style="max-height: 100%">
-        <div class="col-lg-3 d-flex flex-column p-4 m-1 overflow-auto justify-content-center" style="max-height: 720px; overflow-y:hidden;">  
-            <button class="row deviceButton" *ngFor="let device of deviceConfigs" (click)="showConfig(device.name)"><h4>{{device.name}} <small class="text-muted"> {{device.host}}</small></h4></button>
+        <div class="col-lg-3 d-flex flex-column p-4 m-1 overflow-auto" style="max-height: 720px; overflow-y:hidden;">  
+            <div class="row" *ngFor="let device of deviceConfigs" (click)="showConfig(device.name)"><button class="btn btn-outline-primary deviceButton"><h4>{{device.name}} <small class="text-dark"> {{device.host}}</small></h4></button></div>
             <div class="align-items-center mt-3">
                 <button type="button" class="btn btn-primary" (click)="open(addDeviceModal)">Add device</button>
             </div>
+            <div class="align-items-center mt-3">
+              <button type="button" class="btn btn-primary" (click)="getRunningConfigs()">Refresh list</button>
+          </div>
         </div>
-        <div class="col-lg-4 d-flex flex-column p-4">
-            <div class="row">{{currentConfig}}</div>
+        <div class="col-lg-6 d-flex flex-column p-4 justify-content-center overflow-auto" style="max-height: 720px;">
+            <div class="row" [innerText]="currentConfig" style="max-height: 720px;"></div>
         </div>
+        <div class="col-lg-2 d-flex flex-column p-4" style="max-height: 720px;">
+          Name:{{currentName}}<br>
+          Host:{{currentHost}}<br>
+          Device Type:{{currentDeviceType}}<br>
+          Username:{{currentUsername}}<br>
+          Password:{{currentPassword}}<br>
+          Secret:{{currentSecret}}<br>
+      </div>
     </div>
 </div>
 
@@ -21,8 +33,8 @@
     <div class="modal-body d-flex justify-content-center flex-column align-items-center">
       <label class="form-label">Device Type</label>
       <select class="form-select" [(ngModel)]="deviceType">
-        <option value="Router">Router</option>
-        <option value="Switch">Switch</option>
+        <option value="router">router</option>
+        <option value="switch">switch</option>
       </select>
       <label class="form-label">Device Name</label>
       <input class="form-control" [(ngModel)]="deviceName" />

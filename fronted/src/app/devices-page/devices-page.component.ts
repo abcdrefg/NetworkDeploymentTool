@@ -20,14 +20,22 @@ export class DevicesPageComponent implements OnInit {
   password: string = '';
   host: string = '';
   secret: string = '';
-  deviceType: string = 'Router';
+  deviceType: string = 'router';
   deviceName: string = '';
   currentConfig: string = '';
   deviceConfigs: RunningConfig[] = [];
   isLoading: boolean = false;
   showSuccess = false;
   showError = false;
-  devices = ["FirstDevice", "SecondDevice"];
+  isFetchingDevices: boolean = false;
+
+  currentUsername: string = '';
+  currentPassword: string = '';
+  currentHost: string = '';
+  currentSecret: string = '';
+  currentDeviceType: string = '';
+  currentName: string = '';
+
   constructor(private modalService: NgbModal, private deviceService: DeviceService) { 
     this.modalOptions = {
       backdrop:'static',
@@ -36,7 +44,7 @@ export class DevicesPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getRunningConfigs(this.devices);
+    this.getRunningConfigs();
   }
 
   open(content: any) {
@@ -48,9 +56,16 @@ export class DevicesPageComponent implements OnInit {
   }
 
   showConfig(name: string) {
-    this.currentConfig = this.deviceConfigs.filter((device) => {
+    const configWrapper = this.deviceConfigs.filter((device) => {
       return device.name == name;
-    })[0].config;
+    })[0];
+    this.currentConfig = configWrapper.config;
+    this.currentHost = configWrapper.host;
+    this.currentName = configWrapper.name;
+    this.currentDeviceType = configWrapper.deviceType;
+    this.currentPassword = configWrapper.password;
+    this.currentSecret = configWrapper.secret;
+    this.currentUsername = configWrapper.username;
   }
 
   private getDismissReason(reason: any): string {
@@ -78,29 +93,36 @@ export class DevicesPageComponent implements OnInit {
         this.isLoading = false;
         this.modalService.dismissAll();
         this.showSuccess = true;
+        this.getRunningConfigs();
       },
       (error) => {console.log(error)
         this.isLoading = false;
         this.modalService.dismissAll();
         this.showError = true;
-        this.getRunningConfigs(this.devices);
       });
   }
 
-  getRunningConfigs(devices: Array<string>) {
-    this.deviceService.getDevices(devices).subscribe(
+  getRunningConfigs() {
+    this.isFetchingDevices = true;
+    this.deviceService.getDevices().subscribe(
       (deviceConfigsData) => {
         this.deviceConfigs = deviceConfigsData;
+        this.isFetchingDevices = false;
       },
       (error) => {
         console.log("ERORR", error);
+        this.isFetchingDevices = false;
       }
     )
   } 
 }
 
 export interface RunningConfig {
-  name: string;
-  host: string;
   config: string;
+  username: string;
+  password: string;
+  secret: string;
+  host: string;
+  deviceType: string;
+  name: string;
 }

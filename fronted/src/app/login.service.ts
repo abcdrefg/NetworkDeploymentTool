@@ -24,10 +24,9 @@ export class LoginService {
     );
   }
 
-  checkToken(token: String): Observable<LoginAuthenticated> {
-    return this.httpClient.post<LoginAuthenticated>(
-      this.backendServerAddress + '/loginService/checkToken',
-      token
+  getTokens(): Observable<string[]> {
+    return this.httpClient.get<string[]>(
+      this.backendServerAddress + '/loginService/getTokens'
     );
   }
 }

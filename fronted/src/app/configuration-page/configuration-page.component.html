@@ -1,0 +1,20 @@
+<div class="container-lg justify-content-center" style="max-height: 720px">
+    <div class="row" style="max-height: 100%">
+        <div class="col-lg-3 d-flex flex-column p-4 m-1 overflow-auto" style="max-height: 720px; overflow-y:hidden;">  
+            <div class="spinner-border mt-4 justify-content-center align-items-center" role="status" [hidden]="!isFetchingDevices"><span class="visually-hidden">Loading...</span></div>
+            <div class="row" *ngFor="let device of deviceConfigs" (click)="showConfig(device.name)"><button class="btn btn-outline-primary deviceButton"><h4>{{device.name}} <small class="text-dark"> {{device.host}}</small></h4></button></div>
+            <div class="align-items-center mt-3">
+              <button type="button" class="btn btn-primary" (click)="getRunningConfigs()">Refresh list</button>
+          </div>
+        </div>
+        <div class="col-lg-7 d-flex flex-column p-4 justify-content-center overflow-auto" style="height: 720px;">
+            <div class="d-flex flex-row p-4 justify-content-center">
+                <button type="button" class="btn btn-primary" (click)="unlockEdit()" style="width: 30%; margin-right: 2%;">Edit</button>
+                <button type="button" class="btn btn-primary" (click)="cancelEdit()" style="width: 30%; margin-right: 2%;">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="saveEdit()" style="width: 30%; margin-right: 2%;">Save</button>
+            </div>
+            <textarea [(ngModel)]="config" [hidden]="!editMode" style="height:90%"></textarea>
+            <div [hidden]="editMode" style="height:90%" [innerText]="config"></div>
+        </div>
+    </div>
+</div>

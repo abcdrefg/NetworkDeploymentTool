@@ -16,6 +16,13 @@ import { AuthGuard } from './auth.guard';
 import { AccountService } from './account.service';
 import { DevicesPageComponent } from './devices-page/devices-page.component';
 import { DeviceService } from './device.service';
+import { ConfigurationPageComponent } from './configuration-page/configuration-page.component';
+import { ConfigurationService } from './configuration.service';
+import { DeploymentPageComponent } from './deployment-page/deployment-page.component';
+import { ConfigurationTestComponent } from './configuration-test/configuration-test.component';
+import { DeploymentService } from './deployment.service';
+import { UnitTestComponent } from './unit-test/unit-test.component';
+import { DeployTabComponent } from './deploy-tab/deploy-tab.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +30,12 @@ import { DeviceService } from './device.service';
     MainComponent,
     LandingComponent,
     AccountComponent,
-    DevicesPageComponent
+    DevicesPageComponent,
+    ConfigurationPageComponent,
+    DeploymentPageComponent,
+    ConfigurationTestComponent,
+    UnitTestComponent,
+    DeployTabComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +44,7 @@ import { DeviceService } from './device.service';
     HttpClientModule,
     NgbModule
   ],
-  providers: [CookieService, AuthService, AuthGuard, AccountService, DeviceService],
+  providers: [CookieService, AuthService, AuthGuard, AccountService, DeviceService, ConfigurationService, DeploymentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
