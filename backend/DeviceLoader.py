@@ -34,16 +34,6 @@ def load_devices():
     #
     # interface.build_config()
 
-
-def create_connection():
-    net_connect = ConnectHandler(device_type="cisco_ios_telnet", host="192.168.1.1", username="admin", password="admin1")
-    net_connect.enable()
-    config_command = ["router ospf 2", "network 192.168.100.0 0.0.0.255 area 0"]
-    out = net_connect.send_config_set(config_command)
-    print(out)
-    print(net_connect.send_command("sh run"))
-
-
 def check_connection(connection_wrapper):
     try:
         conn = ConnectHandler(device_type=connection_wrapper.device_type,
@@ -64,7 +54,9 @@ def get_running_config(connection_wrapper):
         password=connection_wrapper.password,
         secret=connection_wrapper.secret)
         conn.enable()
-        return conn.send_command("sh run")
+        output = conn.send_command("sh run")
+        conn.disconnect()
+        return output
     except:
         return "Can't reach the device"
 
@@ -73,12 +65,12 @@ def get_devices_running_confs(device_confs):
     running_configs = []
     for device_conf in device_confs:
         conn_wrapper = ConnectionWrapper(device_conf)
-        running_configs.append(ConfigsWrapper(conn_wrapper.name, conn_wrapper.host, get_running_config(conn_wrapper).replace("Building configuration...\n\n", "")).__dict__)
+        running_configs.append(ConfigsWrapper(conn_wrapper, get_running_config(conn_wrapper).replace("Building configuration...\n\n", "")).__dict__)
     return running_configs
 
 class ConnectionWrapper:
     def __init__(self, device_dict):
-        self.device_type = "cisco_ios_telnet"
+        self.device_type = device_dict["deviceType"]
         self.host = device_dict["host"]
         self.username = device_dict["username"]
         self.password = device_dict["password"]
@@ -86,7 +78,11 @@ class ConnectionWrapper:
         self.name = device_dict["name"]
 
 class ConfigsWrapper:
-    def __init__(self, device_name, device_host, device_config):
-        self.name = device_name
-        self.host = device_host
+    def __init__(self, conn_wrapper, device_config):
+        self.name = conn_wrapper.name
+        self.host = conn_wrapper.host
         self.config = device_config
+        self.deviceType = conn_wrapper.device_type
+        self.username = conn_wrapper.username
+        self.password = conn_wrapper.password
+        self.secret = conn_wrapper.secret

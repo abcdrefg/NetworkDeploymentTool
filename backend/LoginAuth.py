@@ -27,3 +27,8 @@ class User_authenticator:
                    'status': 400,
                    'Error': 'Unexpected error.',
                }, 400
+
+    @user_auth.route('/getTokens', methods=['GET'])
+    def get_tokens():
+        database_cursor = DatabaseConnection()
+        return database_cursor.get_tokens()

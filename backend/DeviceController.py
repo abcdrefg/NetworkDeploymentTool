@@ -15,8 +15,6 @@ class DeviceAddController:
 
     @device_controller.route('/addDevice', methods=['POST'])
     def add_device():
-        print(request.get_json())
-
         if not request.is_json:
             return bad_request
         json_data = request.get_json()
@@ -35,15 +33,10 @@ class DeviceAddController:
             print("similar device exist in database")
             return bad_request
 
-    @device_controller.route('/getRunningConfigs', methods=['POST'])
+    @device_controller.route('/getRunningConfigs', methods=['GET'])
     def get_running_configs():
-        if not request.is_json:
-            return bad_request
-        devices_names = request.get_json()
-        if devices_names == None:
-            return bad_request
         database_conn = DatabaseConnection()
-        running_confs = get_devices_running_confs(database_conn.get_devices(devices_names))
+        running_confs = get_devices_running_confs(database_conn.get_devices())
         return running_confs
 
 
