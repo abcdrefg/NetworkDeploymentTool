@@ -24,13 +24,21 @@ class ConfigurationController:
 
     @configuration_controller.route('/upsertCommands', methods=['PUT'])
     def upsert_commands():
-        print(request.get_json())
         database_cursor = DatabaseConnection()
         if not request.is_json:
             return bad_request
         json_data = request.get_json()
         database_cursor.upsert_commands(json_data)
         return json.dumps({'success': True}), 200, {'ContentType':'application/json'}
+
+    @configuration_controller.route('/isEditEnabled', methods=['GET'])
+    def is_edit_enabled():
+        database_conn = DatabaseConnection()
+        deploy_stat = database_conn.get_deployment_status()
+        if deploy_stat["SyntaxTest"] == "True":
+            return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
 
 class CommandWrapper:
 

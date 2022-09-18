@@ -1,5 +1,4 @@
 import json
-
 from flask import Blueprint, request, jsonify
 from DatabaseConnection import DatabaseConnection
 from DeviceLoader import ConnectionWrapper, check_connection, get_running_config, get_devices_running_confs

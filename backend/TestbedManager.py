@@ -1,11 +1,9 @@
 from genie.testbed import load
 from DatabaseConnection import DatabaseConnection
-import os
-import json
-import htmldiff
+
 class TestbedManager:
 
-    def create_testbed_dict(self):
+    def create_testbed(self):
         database_conn = DatabaseConnection()
         config_wrappers_map = database_conn.get_device_connection_configs_map()
         device_dict = {}
@@ -28,11 +26,13 @@ class TestbedManager:
                     "default": {
                         "username": config_wrapper.username,
                         "password": config_wrapper.password
+                    },
+                    "enable": {
+                        "password": config_wrapper.secret
                     }
                 }
         testbed_dict = {}
         testbed_dict["devices"] = device_dict
-        #testbed = load(testbed_dict)
-        #device = testbed.devices["FirstDevice"]
-        #device.connect()
+        testbed = load(testbed_dict)
+        return testbed
 

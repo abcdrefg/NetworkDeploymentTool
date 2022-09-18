@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 from DeviceLoader import ConnectionWrapper
 
-
 class DatabaseConnection:
     client = MongoClient("mongodb://localhost:27017/")
     database_name = client["NetworkDeployment"]
@@ -13,6 +12,9 @@ class DatabaseConnection:
     devices_collection = "NetworkDevices"
     commands_collection = "DevicesCommands"
     deployment_status = "DeploymentStatus"
+    config_versions = "ConfigVersions"
+    unit_tests = "UnitTests"
+
     def get_users(self, login, password):
         collection = self.database_name[self.user_collection]
         user = collection.find_one({"username": login})
@@ -94,5 +96,61 @@ class DatabaseConnection:
         status = collection.find_one()
         collection.update_one(status, {"$set": {"UnitTest": "True"}})
 
+    def finish_deploy(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        collection.update_one(status, {"$set": {"Deployed": "True"}})
 
+    def insert_config_version(self, config_dict, is_current_config):
+        collection = self.database_name[self.config_versions]
+        config = collection.insert_one(config_dict)
+        if is_current_config:
+            self.update_current_conf(config.inserted_id)
 
+    def update_current_conf(self, id):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        collection.update_one(status, {"$set": {"CurrentConfig": id}})
+
+    def get_current_configs(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        curr_conf_id = status["CurrentConfig"]
+        collection_configs = self.database_name[self.config_versions]
+        configs = collection_configs.find_one({"_id": curr_conf_id})
+        return configs["configs"]
+
+    def remove_config_records(self):
+        collection = self.database_name[self.commands_collection]
+        collection.drop()
+
+    def set_start_status(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        collection.update_one(status, {"$set": {"Deployed": "False", "SyntaxTest": "False", "UnitTest": "False"}})
+
+    def get_config_version_by_id(self, version_id):
+        collection = self.database_name[self.config_versions]
+        configs = collection.find_one({"_id": ObjectId(version_id)})
+        return configs["configs"]
+
+    def get_versions(self):
+        collection = self.database_name[self.config_versions]
+        return collection.find()
+
+    def get_unit_tests(self):
+        collection = self.database_name[self.unit_tests]
+        return collection.find()
+
+    def insert_unit_test(self, unit_test):
+        collection = self.database_name[self.unit_tests]
+        collection.insert_one(unit_test)
+
+    def change_unit_test_status(self, testname, status):
+        collection = self.database_name[self.unit_tests]
+        unit_test = collection.find_one({"testname": testname})
+        collection.update_one(unit_test, {"$set": {"isActive": status}})
+
+    def get_active_tests(self):
+        collection = self.database_name[self.unit_tests]
+        return collection.find({"isActive": "true"})

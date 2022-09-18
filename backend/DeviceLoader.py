@@ -36,7 +36,7 @@ def load_devices():
 
 def check_connection(connection_wrapper):
     try:
-        conn = ConnectHandler(device_type=connection_wrapper.device_type,
+        conn = ConnectHandler(device_type=connection_wrapper.os,
                               host=connection_wrapper.host,
                               username=connection_wrapper.username,
                               password=connection_wrapper.password,
@@ -48,7 +48,7 @@ def check_connection(connection_wrapper):
 
 def get_running_config(connection_wrapper):
     try:
-        conn = ConnectHandler(device_type=connection_wrapper.device_type,
+        conn = ConnectHandler(device_type=connection_wrapper.os,
         host=connection_wrapper.host,
         username=connection_wrapper.username,
         password=connection_wrapper.password,
@@ -76,6 +76,7 @@ class ConnectionWrapper:
         self.password = device_dict["password"]
         self.secret = device_dict["secret"]
         self.name = device_dict["name"]
+        self.os = 'cisco_ios_telnet'
 
 class ConfigsWrapper:
     def __init__(self, conn_wrapper, device_config):

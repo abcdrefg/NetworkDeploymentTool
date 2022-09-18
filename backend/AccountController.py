@@ -15,7 +15,6 @@ class AccountServices:
         if not request.is_json:
             return bad_request
         json_data = request.get_json()
-        print(json_data)
         if json_data["newPassword"] == None or json_data["oldPassword"] == None or json_data["token"] == None:
             return bad_request
         database_conn = DatabaseConnection()

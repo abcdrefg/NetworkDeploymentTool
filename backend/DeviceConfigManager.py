@@ -23,7 +23,7 @@ class DeviceConfigManager:
         error_array = []
         for device_name in self.configs_by_name.keys():
             connection_wrapper = self.device_conn_by_name[device_name]
-            conn = ConnectHandler(device_type=connection_wrapper.device_type,
+            conn = ConnectHandler(device_type=connection_wrapper.os,
                                   host=connection_wrapper.host,
                                   username=connection_wrapper.username,
                                   password=connection_wrapper.password,
@@ -51,7 +51,7 @@ class DeviceConfigManager:
         rollback_map = {}
         for device_name in self.configs_by_name.keys():
             connection_wrapper = self.device_conn_by_name[device_name]
-            conn = ConnectHandler(device_type=connection_wrapper.device_type,
+            conn = ConnectHandler(device_type=connection_wrapper.os,
                                   host=connection_wrapper.host,
                                   username=connection_wrapper.username,
                                   password=connection_wrapper.password,
@@ -69,13 +69,13 @@ class DeviceConfigManager:
             conn.disconnect()
             if len(errors) != 0:
                 self.rollback_configs(rollback_map)
-            return errors
+                return errors
         return 'success'
 
     def rollback_configs(self, rollback_map):
         for device_name in rollback_map:
             connection_wrapper = self.device_conn_by_name[device_name]
-            conn = ConnectHandler(device_type=connection_wrapper.device_type,
+            conn = ConnectHandler(device_type=connection_wrapper.os,
                                   host=connection_wrapper.host,
                                   username=connection_wrapper.username,
                                   password=connection_wrapper.password,
