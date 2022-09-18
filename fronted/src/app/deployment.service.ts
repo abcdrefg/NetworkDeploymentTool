@@ -35,4 +35,34 @@ export class DeploymentService {
     return this.httpClient.get(
       this.backendServerAddress + '/deploymentController/deployConfigurations');
   }
+
+  getDiffrences(): Observable<any> {
+    return this.httpClient.get<any>(
+      this.backendServerAddress + '/deploymentController/getDiffrences');
+  }
+
+  commit(): Observable<any> {
+    return this.httpClient.head(
+      this.backendServerAddress + '/deploymentController/createSnapshot');  
+  }
+
+  checkIsDeployed(): Observable<any> {
+    return this.httpClient.get<any>(
+      this.backendServerAddress + '/deploymentController/checkDeploy');
+  }
+
+  startNewDeploymentProcess(): Observable<any> {
+    return this.httpClient.head<any>(
+      this.backendServerAddress + '/deploymentController/startNewProcess');
+  }
+
+  terminateProccess(): Observable<any> {
+    return this.httpClient.head<any>(
+      this.backendServerAddress + '/deploymentController/terminateProcess');
+  }
+
+  runTests(): Observable<any> {
+    return this.httpClient.get<any>(
+      this.backendServerAddress + '/deploymentController/runTests');
+  }
 }

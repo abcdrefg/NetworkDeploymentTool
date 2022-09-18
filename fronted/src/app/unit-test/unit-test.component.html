@@ -1,19 +1,19 @@
-<div class="row" style="max-height: 100%; display: flex; flex-direction: row; justify-content: center;">
+<div class="row" style="display: flex; flex-direction: row; justify-content: center;">
     <button class="btn btn-primary" (click)="runUnitTests()">Run unit tests</button>
 </div>
-<div class="row" style="max-height: 100%; display: flex; flex-direction: row; justify-content: center; margin-top: 4%;">
+<div class="row" style="display: flex; flex-direction: row; justify-content: center; margin-top: 4%;">
     <div class="spinner-border" [hidden]="!isTestsRunning" style="width: 5rem; height: 5rem; margin-top: 10%;">
     </div>
-    <div class="text-bg-warning p-3 messages" [hidden]="!showTestsFailed">Configuration commands failed during tests</div>
-    <div class="text-bg-success p-3 messages" [hidden]="!showTestsPassed">Configuration commands passed syntax test</div>
-    <ngb-accordion *ngFor="let errorWrapper of errors">
-        <ngb-panel title={{errorWrapper.device}}>
-            <ng-template ngbPanelContent>
-                <div [innerText]="errorWrapper.errors"></div>
-            </ng-template>
-        </ngb-panel>
-    </ngb-accordion>
-    <div class="row" style="width:100%; margin-top: 3%;">
-        <button class="btn btn-primary" style="width:20%; margin-left:80%" [hidden]="!showTestsPassed" (click)="finishStep()">Next step</button>
+    <div class="text-bg-warning p-3 messages" *ngIf="showTestsFailed">Unit tests failed</div>
+    <div class="text-bg-success p-3 messages" *ngIf="showTestsPassed">Unit tests passed</div>
+    <div class="row" style="width: 100%">
+        <button class="btn btn-primary" (click)="finishStep()" *ngIf="showTestsPassed" style="width: 20%; margin-left:80%;">Next step</button>
     </div>
+    <div class="result" *ngFor="let result of results" style="display: flex; align-items: center; justify-content: center">
+        <h4>{{result.testname}} : {{result.result}}</h4>
+        <img *ngIf="result.result == 'passed'" width="25px" height="25px" src="/assets/greentick.png" style="margin-right:2%; margin-left: 3%;">
+        <img *ngIf="result.result != 'passed'" width="25px" height="25px" src="/assets/redcross.png" style="margin-right:2%; margin-left: 3%;">
+        <img width="50px" height="50px" src="/assets/py.png" style="margin-right:2%">
+    <div>
+    
 </div>

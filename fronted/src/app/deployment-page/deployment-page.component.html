@@ -1,13 +1,17 @@
-<div class="container-lg justify-content-center" style="max-height: 720px">
+<div class="container-lg justify-content-center">
     <div class="row" style="max-height: 100%; display: flex; flex-direction: row; justify-content: center;">
         <div style="display:flex; flex-direction:row; justify-content: center; align-items: center;">
             <p [ngClass]="configTestsClass" style="margin-left:4%">Testing Configurations</p>
             <p [ngClass]="unitTestsClass" style="margin-left:4%">Testing Unit Tests</p>
             <p [ngClass]="deployClass" style="margin-left:4%">Deployment</p> 
+        </div>
     </div>
-    <div class="row" style="max-height: 100%; display: flex; flex-direction: row; justify-content: center;">
+    <div class="row" style="display: flex; flex-direction: row; justify-content: center; margin-bottom: 2%;">
+        <button class="btn btn-outline-warning" (click)="terminateProcess()">Terminate process</button>
+    </div>
+    <div class="row" style="display: flex; flex-direction: row; justify-content: center;">
         <app-configuration-test [hidden] = "deployStatus != 'SyntaxTest'" (updateStatus)="updateStatus()"></app-configuration-test>
         <app-unit-test [hidden] = "deployStatus != 'UnitTest'" (updateStatus)="updateStatus()"></app-unit-test>
-        <app-deploy-tab [hidden] = "deployStatus != 'Deployment'"></app-deploy-tab>
+        <app-deploy-tab [hidden] = "deployStatus != 'Deployment'" (updateStatus)="updateStatus()"></app-deploy-tab>
     </div>
 </div>

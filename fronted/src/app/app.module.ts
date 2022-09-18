@@ -23,6 +23,10 @@ import { ConfigurationTestComponent } from './configuration-test/configuration-t
 import { DeploymentService } from './deployment.service';
 import { UnitTestComponent } from './unit-test/unit-test.component';
 import { DeployTabComponent } from './deploy-tab/deploy-tab.component';
+import { HistoryPageComponent } from './history-page/history-page.component';
+import { UnitTestsPageComponent } from './unit-tests-page/unit-tests-page.component';
+import { VersionControlService } from './version-control.service';
+import { UnitTestManagementService } from './unit-test-management.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +39,9 @@ import { DeployTabComponent } from './deploy-tab/deploy-tab.component';
     DeploymentPageComponent,
     ConfigurationTestComponent,
     UnitTestComponent,
-    DeployTabComponent
+    DeployTabComponent,
+    HistoryPageComponent,
+    UnitTestsPageComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +50,7 @@ import { DeployTabComponent } from './deploy-tab/deploy-tab.component';
     HttpClientModule,
     NgbModule
   ],
-  providers: [CookieService, AuthService, AuthGuard, AccountService, DeviceService, ConfigurationService, DeploymentService],
+  providers: [CookieService, AuthService, AuthGuard, AccountService, DeviceService, ConfigurationService, DeploymentService, VersionControlService, UnitTestManagementService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

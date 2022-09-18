@@ -11,12 +11,11 @@ export class UnitTestComponent implements OnInit {
   showTestsPassed: boolean = false;
   showTestsFailed: boolean = false;
   isTestsRunning: boolean = false;
-  errors: any;
+  results: any;
+
   constructor(private deploymentService: DeploymentService) { }
 
-  ngOnInit(): void {
-    this.showTestsPassed = true;
-  }
+  ngOnInit(): void {}
 
   finishStep(): void {
     this.deploymentService.finishUnitTest().subscribe((response) => {
@@ -25,7 +24,29 @@ export class UnitTestComponent implements OnInit {
   }
 
   runUnitTests(): void {
-
+    this.isTestsRunning = true;
+    this.showTestsFailed = false;
+    this.showTestsPassed = false;
+    this.results = [];
+    this.deploymentService.runTests().subscribe((results) => {
+      this.results = results;
+      this.isTestsRunning = false;
+      if (results.length == 0) {
+        this.showTestsPassed = true;
+        return;
+      }
+      results = results.filter((res:any) => {
+        res.result != 'passed';
+      });
+      if (results.length == 0) {
+        this.showTestsFailed = true;
+      } else {
+        this.showTestsPassed = true;
+      }
+    }, (err) => {
+      console.log(err);
+      this.isTestsRunning = false;
+    })
   }
 
 

@@ -14,6 +14,7 @@ export class DeploymentPageComponent implements OnInit {
   deployClass: string = 'text-muted';
   unitTestsClass: string = 'text-muted';
   deployStatus: string = '';
+  
   constructor(private deploymentService: DeploymentService) {
     this.updateStatus();
   }
@@ -40,6 +41,14 @@ export class DeploymentPageComponent implements OnInit {
         this.deployClass = this.activeStep;
         this.unitTestsClass = this.unactiveStep;
       }
+    })
+  }
+
+  terminateProcess(): void {
+    this.deploymentService.terminateProccess().subscribe((succ) => {
+      this.updateStatus();
+    }, (err) => {
+      console.log(err);
     })
   }
 }

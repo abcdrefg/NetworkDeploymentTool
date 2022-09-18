@@ -1,0 +1,50 @@
+<div class="container-lg justify-content-center" style="max-height: 720px">
+  <div class="row" *ngIf="!dataFetching">
+    <div *ngFor="let version of versions" class="versionBox">
+      {{version.Id}} {{version.Timestamp}}
+      <div style="display: flex; flex-direction:row">
+        <button style="width: 150px;" class="btn btn-primary" (click)="open(showVersionModal, version.Id)">View changes</button>
+        <button style="width: 180px;margin-left: 1%;" class="btn btn-primary" (click)="rollbackWindow(confirmModal, version.Id, version.Timestamp)">Restore this config</button>
+      </div>
+    </div>
+  </div>
+  <div class="spinner-border" *ngIf="dataFetching"></div>
+</div>
+
+<ng-template #showVersionModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Changes</h4>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div style="display: flex;justify-content: center;">
+      <div class="spinner-border" [hidden]="!isLoading"></div>
+      <div [hidden]="isLoading" style="margin-top: 2%; align-items: center; justify-content: center;">
+        <ngb-accordion *ngFor="let diff of versionDiff">
+            <ngb-panel title={{diff.name}}>
+                <ng-template ngbPanelContent>
+                    <div [innerHTML]="diff.diff" style="align-items: center; justify-content: center;"></div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+    </div>
+    <div class="modal-footer"></div>
+</ng-template>
+
+<ng-template #confirmModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Config {{currentIdToRestore}} from {{timestampToRestore}}</h5>
+  </div>
+  <div style="padding: 2%; display:flex; justify-content:center;">
+    <h5 class="lead" *ngIf="!restored && !failed">Do you want to restore this network configuration?</h5>
+    <div class="text-bg-warning p-3 messages" *ngIf="failed">Can't restore configuration, unexpected error</div>
+        <div class="text-bg-success p-3 messages" *ngIf="restored">Restoring Finished!</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" *ngIf="!isRestoring && !restored && !failed" class="btn btn-outline-dark" (click)="rollback()">Confirm</button>
+    <button type="button" *ngIf="!isRestoring" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+    <button type="button" *ngIf="isRestoring" class="btn btn-outline-dark">
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    </button>
+  </div>
+</ng-template>

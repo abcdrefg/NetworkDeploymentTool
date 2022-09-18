@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { DevicesPageComponent } from './devices-page/devices-page.component';
 import { ConfigurationPageComponent } from './configuration-page/configuration-page.component';
 import { DeploymentPageComponent } from './deployment-page/deployment-page.component';
+import { HistoryPageComponent } from './history-page/history-page.component';
+import { UnitTestsPageComponent } from './unit-tests-page/unit-tests-page.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'landing', component: LandingComponent, canActivate: [AuthGuard] },
@@ -14,7 +16,9 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: 'devices', component: DevicesPageComponent, canActivate: [AuthGuard] },
   { path: 'configuration', component: ConfigurationPageComponent, canActivate: [AuthGuard] },
-  { path: 'deployment', component: DeploymentPageComponent, canActivate: [AuthGuard] }
+  { path: 'deployment', component: DeploymentPageComponent, canActivate: [AuthGuard] },
+  { path: 'history', component: HistoryPageComponent, canActivate: [AuthGuard] },
+  { path: 'tests', component: UnitTestsPageComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

@@ -17,12 +17,18 @@ export class ConfigurationPageComponent implements OnInit {
   configCopy: string = '';
   editMode: boolean = false;
   currentDevice: string = '';
+  isEditEnabled: boolean = false;
   constructor(private deviceService: DeviceService, private configurationService: ConfigurationService) {
     this.getCommands();
     this.getRunningConfigs();
   }
 
   ngOnInit(): void {
+    this.configurationService.checkIsEditEnabled().subscribe((succ) => {
+      this.isEditEnabled = true;
+    }, (err) => {
+      this.isEditEnabled = false;
+    })
   }
 
   getRunningConfigs() {

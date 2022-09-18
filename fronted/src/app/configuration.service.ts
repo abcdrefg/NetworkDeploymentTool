@@ -21,4 +21,9 @@ export class ConfigurationService {
     return this.httpClient.put<DeviceCommands[]>(
       this.backendServerAddress + '/configurationController/upsertCommands', deviceCommands);
   }
+
+  checkIsEditEnabled(): Observable<any> {
+    return this.httpClient.get<any>(
+      this.backendServerAddress + '/configurationController/isEditEnabled');
+  }
 }
