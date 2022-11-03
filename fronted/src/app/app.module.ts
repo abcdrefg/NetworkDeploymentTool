@@ -27,6 +27,7 @@ import { HistoryPageComponent } from './history-page/history-page.component';
 import { UnitTestsPageComponent } from './unit-tests-page/unit-tests-page.component';
 import { VersionControlService } from './version-control.service';
 import { UnitTestManagementService } from './unit-test-management.service';
+import { StatisticsService } from './statistics.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +51,7 @@ import { UnitTestManagementService } from './unit-test-management.service';
     HttpClientModule,
     NgbModule
   ],
-  providers: [CookieService, AuthService, AuthGuard, AccountService, DeviceService, ConfigurationService, DeploymentService, VersionControlService, UnitTestManagementService],
+  providers: [CookieService, AuthService, AuthGuard, AccountService, DeviceService, ConfigurationService, DeploymentService, VersionControlService, UnitTestManagementService, StatisticsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

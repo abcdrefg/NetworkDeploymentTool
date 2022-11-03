@@ -36,9 +36,10 @@ export class UnitTestComponent implements OnInit {
         return;
       }
       results = results.filter((res:any) => {
-        res.result != 'passed';
+        return res.result != 'passed';
       });
-      if (results.length == 0) {
+      console.log(results);
+      if (results.length != 0) {
         this.showTestsFailed = true;
       } else {
         this.showTestsPassed = true;

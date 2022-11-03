@@ -54,10 +54,11 @@
       </button>
     </div>
 </ng-template>
-
-<ngb-toast class="bg-success bottom-0 end-0 postion-fixed" *ngIf="showSuccess" header="Successfully added" [autohide]="true" (hidden)="showSuccess=false">
-  Device has been added to database
-</ngb-toast>
-<ngb-toast class="bg-danger bottom-0 end-0 postion-fixed" *ngIf="showError" header="Error during adding process" [autohide]="true" (hidden)="showError=false">
-  Given data is probably wrong or device is unreachable
-</ngb-toast>
+<div style="position: absolute; bottom: 30px; right: 20px;">
+  <ngb-toast class="bg-success bottom-0 end-0 postion-fixed" *ngIf="showSuccess" header="Successfully added" [autohide]="true" (hidden)="showSuccess=false">
+    Device has been added to database
+  </ngb-toast>
+  <ngb-toast class="bg-danger bottom-0 end-0 postion-fixed" *ngIf="showError" header="Error during adding process" [autohide]="true" (hidden)="showError=false">
+    Given data is probably wrong or device is unreachable
+  </ngb-toast>
+</div>

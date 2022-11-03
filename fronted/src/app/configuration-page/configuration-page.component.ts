@@ -33,7 +33,7 @@ export class ConfigurationPageComponent implements OnInit {
 
   getRunningConfigs() {
     this.isFetchingDevices = true;
-    this.deviceService.getDevices().subscribe(
+    this.deviceService.getDeviceDatabase().subscribe(
       (deviceConfigsData) => {
         this.deviceConfigs = deviceConfigsData;
         this.isFetchingDevices = false;

@@ -22,6 +22,11 @@ export class DeviceService {
     return this.httpClient.get<RunningConfig[]>(
       this.backendServerAddress + '/deviceController/getRunningConfigs')
   }
+
+  getDeviceDatabase(): Observable<RunningConfig[]> {
+    return this.httpClient.get<RunningConfig[]>(
+      this.backendServerAddress + '/deviceController/getDatabaseConfigs')
+  }
 }
 
 export interface DeviceInfoWrapper {
