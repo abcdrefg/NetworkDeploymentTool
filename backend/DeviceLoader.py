@@ -1,39 +1,6 @@
 from genie.testbed import load
 from netmiko import ConnectHandler
 
-commands = ['show inventory', 'show ip interface brief']
-
-
-def load_devices():
-    tb = load("devices.yaml")
-    dev = tb.devices['ios1']
-    dev.connect()
-    dev.configure('''
-        router ospf 1
-        network 192.168.10.0 0.0.0.255 area 0
-        no shutdown
-    ''')
-    # rip = Rip(instance_id='1')
-    # rip.distance = 10
-    # rip.maximum_paths = 15
-    # dev.add_feature(rip)
-    # rip.build_config(Apply = True)
-    # for command in commands:
-    # print(dev.parse(command))
-    # ospf = Ospf(device = dev)
-    # ospf.instance = '2'
-    # ospf.area = '0'
-    # ospf.enable = True
-    # ospf.router_id = '0.0.0.0'
-    # dev.add_feature(ospf)
-    # ospf.build_config(apply=True)
-    # interface = Interface(device=dev, name='FastEthernet1/0')
-    # interface.ipv4='192.168.20.1'
-    # interface.ipv4.netmask = '255.255.255.0'
-    # interface.shutdown = False
-    #
-    # interface.build_config()
-
 def check_connection(connection_wrapper):
     try:
         conn = ConnectHandler(device_type=connection_wrapper.os,

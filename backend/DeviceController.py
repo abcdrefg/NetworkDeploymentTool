@@ -1,7 +1,7 @@
 import json
 from flask import Blueprint, request, jsonify
 from DatabaseConnection import DatabaseConnection
-from DeviceLoader import ConnectionWrapper, check_connection, get_running_config, get_devices_running_confs
+from DeviceLoader import ConnectionWrapper, check_connection, get_running_config, get_devices_running_confs, ConfigsWrapper
 
 device_controller = Blueprint('device_controller', __name__)
 bad_request = {
@@ -38,4 +38,12 @@ class DeviceAddController:
         running_confs = get_devices_running_confs(database_conn.get_devices())
         return running_confs
 
+    @device_controller.route('/getDatabaseConfigs', methods=['GET'])
+    def get_conn_configs_from_database():
+        database_conn = DatabaseConnection()
+        device_conns = database_conn.get_devices()
+        device_conns_wrappers = []
+        for device_conn in device_conns:
+            device_conns_wrappers.append(ConfigsWrapper(ConnectionWrapper(device_conn), '').__dict__)
+        return device_conns_wrappers
 

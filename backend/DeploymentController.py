@@ -83,6 +83,12 @@ class DeploymentController():
 
     @deployment_controller.route('/runTests', methods=['GET'])
     def run_test():
+        dcm = DeviceConfigManager()
+        rollback_map = dcm.get_rollback_conf()
+        syntax_err = dcm.deploy_test_config()
+        if len(syntax_err) > 0:
+            return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
         utm = UnitTestManager()
         results = utm.execute()
+        dcm.rollback_configs(rollback_map)
         return results
