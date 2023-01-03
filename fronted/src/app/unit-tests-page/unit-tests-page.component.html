@@ -1,0 +1,22 @@
+<div class="container-lg justify-content-center" style="max-height: 720px">
+    <div class="row" *ngIf="!dataFetching">
+      <div style="width: 100%; display: flex; justify-content: center;margin-top: 3%;">
+        <button class="btn btn-primary" style="width: 20%;">
+            <label style="width: 100%;">
+                Add test
+                <input type="file" (change)="addTest($event)" style="display: none;">
+            </label>
+        </button>
+      </div>
+      <div *ngFor="let test of testsList" class="utBox">
+        <p class="lead" style="margin-left: 2%;">{{test.testname}}</p>
+        <div style="display: flex; flex-direction:row; align-items: center">
+          <img *ngIf="test.isActive == 'true'" width="25px" height="25px" src="/assets/green.png" style="margin-right:2%">
+          <img *ngIf="test.isActive != 'true'" width="25px" height="25px" src="/assets/red.png" style="margin-right:2%">
+            <button *ngIf="test.isActive != 'true'" style="width: 150px;" class="btn btn-success" (click)="activateTest(test.testname)">Activate</button>
+            <button *ngIf="test.isActive == 'true'" style="width: 150px;" class="btn btn-danger" (click)="disableTest(test.testname)">Disable</button>
+        </div>
+      </div>
+    </div>
+    <div class="spinner-border" *ngIf="dataFetching"></div>
+  </div>
