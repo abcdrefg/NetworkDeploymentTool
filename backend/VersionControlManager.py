@@ -40,7 +40,9 @@ class VersionControlManager:
         curr_devices_configs_map = database_conn.get_config_version_by_id(version_id)
         return self.diffrences_generator(curr_devices_configs_map, running_devices_configs_map)
 
-    def diffrences_generator(self, curr_devices_configs_map, running_devices_configs_map):
+    def diffrences_generator(self,
+                             curr_devices_configs_map,
+                             running_devices_configs_map):
         config_diffs = {}
         for device_name in running_devices_configs_map.keys():
             old_string = ''  # null pointer preventing
@@ -51,5 +53,8 @@ class VersionControlManager:
                 new_string = running_devices_configs_map[device_name]
             old = io.StringIO(old_string)
             new = io.StringIO(new_string)
-            config_diffs[device_name] = difflib.HtmlDiff(wrapcolumn=50).make_table(old.readlines()[3:], new.readlines()[3:], context=True)
+            config_diffs[device_name] = difflib.HtmlDiff(wrapcolumn=50)\
+                                               .make_table(old.readlines()[3:],
+                                                           new.readlines()[3:],
+                                                           context=True)
         return config_diffs

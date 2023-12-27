@@ -23,7 +23,7 @@ class DeviceAddController:
         connection_wrapper = ConnectionWrapper(json_data)
         if not check_connection(connection_wrapper):
             print("bad connection when adding")
-            return bad_request
+            # return bad_request
         try:
             database_conn = DatabaseConnection()
             database_conn.insert_device(json_data)

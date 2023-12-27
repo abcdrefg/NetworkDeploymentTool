@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 from DeviceLoader import ConnectionWrapper
@@ -32,8 +31,6 @@ class DatabaseConnection:
         user = collection.find_one({"_id": ObjectId(id)})
         if not (self.check_password(user.get('password'), oldPassword)):
             return False
-        newUser = {"$set": {"password": generate_password_hash(newPassword)}}
-        updateResult = collection.update_one(user, newUser)  # toRead
         return True
 
     def get_device_connection_configs_map(self):
