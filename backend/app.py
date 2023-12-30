@@ -9,6 +9,7 @@ from VersionsController import version_controller
 from UnitTestsController import unit_test_controller
 from StatisticsController import statistics_controller
 
+
 running_app = Flask(__name__)
 running_app.register_blueprint(user_auth, url_prefix='/loginService')
 running_app.register_blueprint(account_controller, url_prefix='/accountService')
@@ -31,9 +32,14 @@ mapper.generate_network_map()
 
 networks = mapper.get_networks().keys()
 
-print(networks)
+
+from VyAPIConnection import VyAPIConnection
+from VyRouterAuthData import ApiAuthData
+r1_conn = VyAPIConnection(ApiAuthData('192.168.18.90', 'MY-KEY'))
+number_of_ports_r1 = len(r1_conn.get_eth_ints())
 
 from ProxmoxApiService import ProxmoxApiService
-print(ProxmoxApiService().set_host('192.168.18.102').set_credentials('root', 'Admin12!').create_connection().create_networks(networks))
+ProxmoxApiService().set_host('192.168.18.102').set_credentials('root', 'Admin12!').create_connection().create_router_vm(number_of_ports_r1)
+
 
 

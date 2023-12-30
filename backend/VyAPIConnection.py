@@ -18,6 +18,16 @@ class VyAPIConnection:
             raise Exception(f'{self.REQUEST_FAILED} {response["data"]}')
         return response["data"]
 
+    def get_eth_ints(self):
+        lines = self.get_interface_data().split('\n')
+        eth_ints = []
+        for line in lines:
+            if not line.startswith('eth'):
+                continue
+            columns = line.split()
+            eth_ints.append(columns[0])
+        return eth_ints
+
     def make_request(self, action, endpoint, path):
         url = f'https://{self.credentials.host}{endpoint}'
         data = {}
