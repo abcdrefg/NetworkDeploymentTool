@@ -21,25 +21,25 @@ running_app.register_blueprint(unit_test_controller, url_prefix='/unitTestContro
 running_app.register_blueprint(statistics_controller, url_prefix='/statisticsService')
 CORS(running_app)
 
-if __name__ == '__main__':
-    running_app.run(host='localhost')
-
-
 from VyNetworkMapper import VyNetworkMapper
 from DatabaseConnection import DatabaseConnection
 mapper = VyNetworkMapper(DatabaseConnection())
 mapper.generate_network_map()
 
 networks = mapper.get_networks().keys()
-
+print(networks)
 
 from VyAPIConnection import VyAPIConnection
 from VyRouterAuthData import ApiAuthData
-r1_conn = VyAPIConnection(ApiAuthData('192.168.18.90', 'MY-KEY'))
+r1_conn = VyAPIConnection(ApiAuthData('192.168.56.2', 'MY-KEY'))
 number_of_ports_r1 = len(r1_conn.get_eth_ints())
 
-from ProxmoxApiService import ProxmoxApiService
-ProxmoxApiService().set_host('192.168.18.102').set_credentials('root', 'Admin12!').create_connection().create_router_vm(number_of_ports_r1)
+
+
+if __name__ == '__main__':
+    running_app.run(host='localhost')
+
+
 
 
 

@@ -16,7 +16,9 @@ class VyNetworkMapper:
         self.__get_connection_credentials_from_db()
 
     def __get_connection_credentials_from_db(self):
-        self.__connection_by_router['R1'] = VyAPIConnection(ApiAuthData('192.168.18.90', 'MY-KEY'))
+        for credentials in self.__db_connection.get_devices():
+            print(credentials)
+            self.__connection_by_router['R1'] = VyAPIConnection(ApiAuthData(credentials['host'], 'MY-KEY'))
 
     def __map_ips(self):
         for router_name in self.__connection_by_router:
@@ -37,7 +39,6 @@ class VyNetworkMapper:
 
     def __group_ips_by_subnet(self):
         networks = {}
-        self.__router_by_ip_address['192.168.11.2/28'] = 'R2'
 
         for ip in self.__router_by_ip_address:
             network_address = f'{ipaddress.IPv4Network(ip, strict=False).network_address}/{ipaddress.IPv4Network(ip, strict=False).netmask}'
