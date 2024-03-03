@@ -5,7 +5,7 @@ from VyAPIConnection import VyAPIConnection
 import ipaddress
 
 class VyNetworkMapper:
-    __router_by_ip_address = {}
+    __router_by_ip = {}
     __connection_by_router = {}
     __links = []
     __nodes = []
@@ -17,14 +17,13 @@ class VyNetworkMapper:
 
     def __get_connection_credentials_from_db(self):
         for credentials in self.__db_connection.get_devices():
-            print(credentials)
-            self.__connection_by_router['R1'] = VyAPIConnection(ApiAuthData(credentials['host'], 'MY-KEY'))
+            self.__connection_by_router[credentials['name']] = VyAPIConnection(ApiAuthData(credentials['host'], credentials['secret']))
 
     def __map_ips(self):
         for router_name in self.__connection_by_router:
             ip_list = self.__get_ip_from_output(self.__connection_by_router[router_name].get_interface_data())
-            for ip_address in ip_list:
-                self.__router_by_ip_address[ip_address] = router_name
+            for ip_port_address in ip_list:
+                self.__router_by_ip[ip_port_address[1]] = (router_name, ip_port_address[0])
         self.__group_ips_by_subnet()
 
     def __get_ip_from_output(self, output):
@@ -34,13 +33,13 @@ class VyNetworkMapper:
             if not line.startswith('eth'):
                 continue
             columns = line.split()
-            ip_address.append(columns[1])
+            ip_address.append((columns[0],columns[1]))
         return ip_address
 
     def __group_ips_by_subnet(self):
         networks = {}
 
-        for ip in self.__router_by_ip_address:
+        for ip in self.__router_by_ip:
             network_address = f'{ipaddress.IPv4Network(ip, strict=False).network_address}/{ipaddress.IPv4Network(ip, strict=False).netmask}'
             if not network_address in networks:
                 networks[network_address] = []
@@ -66,7 +65,7 @@ class VyNetworkMapper:
         self.__create_nodes(networks.keys())
         for network in networks:
             for address in networks[network]:
-                self.__links.append(f'{network}-{self.__router_by_ip_address[address]}')
+                self.__links.append((network,self.__router_by_ip[address][0], self.__router_by_ip[address][1]))
 
     def __create_nodes(self, networks):
         for network in networks:
@@ -77,13 +76,18 @@ class VyNetworkMapper:
     def generate_network_map(self):
         self.__map_ips()
         self.__create_links(self.__networks)
-        print(self.__networks)
 
     def get_nodes(self):
         return self.__nodes
 
     def get_links(self):
         return self.__links
+
+    def get_routers(self):
+        routers = []
+        for router_id in self.__connection_by_router:
+            routers.append(router_id)
+        return routers
 
     def get_networks(self):
         return self.__networks
