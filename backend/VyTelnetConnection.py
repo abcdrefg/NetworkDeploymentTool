@@ -1,7 +1,7 @@
 from netmiko import ConnectHandler
 from VyRouterAuthData import CommandLineAuthData
 
-class VySSHConnection:
+class VyTelnetConnection:
 
     def __init__(self, credentials: CommandLineAuthData):
         self.credentials = credentials
@@ -13,6 +13,5 @@ class VySSHConnection:
           "port": credentials.port,
         })
 
-    def get_config_as_commands(self):
-        output = self.connection.send_command('show config commands')
-        return output
+    def load_config_commands(self, config_commands):
+        output = self.connection.send_command(config_commands)

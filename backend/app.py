@@ -1,14 +1,14 @@
 from flask import Flask
-from LoginAuth import user_auth
-from AccountController import account_controller
 from flask_cors import CORS
-from DeviceController import device_controller
+
+from AccountController import account_controller
 from ConfigurationController import configuration_controller
 from DeploymentController import deployment_controller
-from VersionsController import version_controller
-from UnitTestsController import unit_test_controller
+from DeviceController import device_controller
+from LoginAuth import user_auth
 from StatisticsController import statistics_controller
-
+from UnitTestsController import unit_test_controller
+from VersionsController import version_controller
 
 running_app = Flask(__name__)
 running_app.register_blueprint(user_auth, url_prefix='/loginService')
@@ -21,22 +21,22 @@ running_app.register_blueprint(unit_test_controller, url_prefix='/unitTestContro
 running_app.register_blueprint(statistics_controller, url_prefix='/statisticsService')
 CORS(running_app)
 
-# from VyNetworkMapper import VyNetworkMapper
-# from DatabaseConnection import DatabaseConnection
-# mapper = VyNetworkMapper(DatabaseConnection())
-# mapper.generate_network_map()
-#
-# networks = mapper.get_networks().keys()
-# print(networks)
-#
-# from VyAPIConnection import VyAPIConnection
-# from VyRouterAuthData import ApiAuthData
-# r1_conn = VyAPIConnection(ApiAuthData('192.168.56.2', 'MY-KEY'))
-# number_of_ports_r1 = len(r1_conn.get_eth_ints())
 
+from DatabaseConnection import DatabaseConnection
 from SandboxController import SandboxController
 
-SandboxController().create_sandbox()
+sandbox_controller = SandboxController()
+sandbox_controller.create_sandbox()
+configs_by_router_name = {}
+
+from VySSHConnection import VySSHConnection
+from VyRouterAuthData import CommandLineAuthData
+
+for credentials in DatabaseConnection().get_devices():
+    print(credentials['name'])
+    configs_by_router_name[credentials['name']] = VySSHConnection(CommandLineAuthData(credentials['host'], credentials['username'], credentials['password'])).get_config_as_commands()
+
+sandbox_controller.write_configs_to_routers(configs_by_router_name)
 
 
 if __name__ == '__main__':

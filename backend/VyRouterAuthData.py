@@ -1,7 +1,7 @@
 class CommandLineAuthData:
 
-    def __init__(self, host, username, password):
-        self.port = 22
+    def __init__(self, host, username, password, port=22):
+        self.port = port
         self.host = host
         self.username = username
         self.password = password
