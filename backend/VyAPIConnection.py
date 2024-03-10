@@ -36,7 +36,3 @@ class VyAPIConnection:
         payload = {'data': json.dumps(data),'key': self.credentials.api_key}
         return requests.request("POST", url, headers={}, data=payload, verify=False)
 
-    def get_config_commands(self):
-        response = json.loads(self.make_request('showCommands', self.RETRIEVE_ENDPOINT, []).text)
-        print(response)
-

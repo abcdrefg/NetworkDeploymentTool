@@ -4,7 +4,7 @@ from DatabaseConnection import DatabaseConnection
 from Gns3VirtualNetworkJunctionSwitch import Gns3VirtualNetworkJunctionSwitch
 from VyRouterAuthData import CommandLineAuthData
 from VyTelnetConnection import VyTelnetConnection
-
+from time import sleep
 class SandboxController:
 
     def __init__(self):
@@ -14,6 +14,7 @@ class SandboxController:
         self.__network_switches = {}
         self.__routers = {}
         self.__routers_connection = {}
+        self.__server = None
 
     def create_sandbox(self):
         self.__network_mapper.generate_network_map()
@@ -21,8 +22,10 @@ class SandboxController:
         self.create_junkction_switches(networks)
         self.create_routers(self.__network_mapper.get_routers())
         self.link_routers_with_networks()
-        # self.__gns3_controller.start_topo()
-        self.__start_routers()
+        self.create_test_server()
+        self.__gns3_controller.start_topo()
+        sleep(30)
+        #self.__start_routers()
 
     def create_junkction_switches(self, networks):
         for network in networks:
@@ -36,6 +39,10 @@ class SandboxController:
         for link in self.__network_mapper.get_links():
             self.__gns3_controller.create_link_to_network(self.__network_switches[link[0]], self.__routers[link[1]], link[2])
 
+    def create_test_server(self):
+        self.__server = self.__gns3_controller.create_server_node()
+        self.__gns3_controller.create_link_to_network(self.__network_switches[self.__db_conn.get_server_attachement_network()], self.__server, 'eth0')
+
     def __start_routers(self):
         for router_id in self.__routers:
             self.__routers[router_id].start()
@@ -44,6 +51,5 @@ class SandboxController:
         for router_id in configs_by_router_name:
             router = self.__routers[router_id]
             VyTelnetConnection(CommandLineAuthData(router.console_host, 'vyos', 'vyos', str(router.console))).load_config_commands(configs_by_router_name[router_id])
-        print('idle xxdxdxdxd')
 
 

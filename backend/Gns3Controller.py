@@ -25,7 +25,6 @@ class Gns3Controller:
         self.__project_id = self.__project.project_id
 
     def create_node(self, name, template):
-        # print(self.__project.create_node(name=name, template=template))
         node = gns3fy.Node()
         node.project_id = self.__project_id
         node.connector = self.__gns3_server
@@ -40,9 +39,18 @@ class Gns3Controller:
     def create_vyos_router(self, name):
         return self.create_node(name, VYOS_TEMPLATE_NAME)
 
+    def create_server_node(self):
+        return self.create_node('Test server', TESTBED_SERVER_NAME)
+
     def create_link_to_network(self, network_switch, router, router_port):
         self.__project.get()
         self.__project.create_link(network_switch.get_switch().name, network_switch.next_port()['name'], router.name, router_port)
+
+    def start_topo(self):
+        self.__project.get()
+        sleep(1)
+        self.__project.start_nodes()
+        sleep(5)
 
 
 

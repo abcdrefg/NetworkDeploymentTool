@@ -151,3 +151,8 @@ class DatabaseConnection:
     def get_active_tests(self):
         collection = self.database_name[self.unit_tests]
         return collection.find({"isActive": "true"})
+
+    def get_server_attachement_network(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        return status["AttachemendPoint"]
