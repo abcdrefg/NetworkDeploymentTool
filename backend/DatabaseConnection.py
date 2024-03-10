@@ -156,3 +156,13 @@ class DatabaseConnection:
         collection = self.database_name[self.deployment_status]
         status = collection.find_one()
         return status["AttachemendPoint"]
+
+    def get_server_image_name(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        return status["ImageName"]
+
+    def get_server_ip_address(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        return status["SrvAddress"]

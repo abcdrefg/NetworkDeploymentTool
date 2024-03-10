@@ -38,6 +38,8 @@ for credentials in DatabaseConnection().get_devices():
 
 sandbox_controller.write_configs_to_routers(configs_by_router_name)
 
+sandbox_controller.prepare_test_server()
+
 
 if __name__ == '__main__':
     running_app.run(host='localhost')
