@@ -43,7 +43,7 @@ class ConnectionWrapper:
         self.password = device_dict["password"]
         self.secret = device_dict["secret"]
         self.name = device_dict["name"]
-        self.os = 'cisco_ios_telnet'
+        self.port = 22
 
 class ConfigsWrapper:
     def __init__(self, conn_wrapper, device_config):
