@@ -1,7 +1,7 @@
 import glob
 from pyats import aetest
-from DatabaseConnection import DatabaseConnection
 import time
+import bson.json_util
 
 class UnitTestManager:
 
@@ -16,8 +16,7 @@ class UnitTestManager:
         return filter(lambda file : file in active_tests_names, test_files)
 
     def get_active_test_names(self):
-        db_conn = DatabaseConnection()
-        active_tests = db_conn.get_active_tests()
+        active_tests = self.get_active_tests()
         tests_name_list = []
         for test in active_tests:
             tests_name_list.append(test["testname"])
@@ -40,34 +39,6 @@ class UnitTestManager:
             })
         return results_list
 
-def add_test(file, filename):
-    database_conn = DatabaseConnection()
-    try:
-        database_conn.insert_unit_test({
-            "testname": filename,
-            "isActive": "false"
-        })
-    except:
-        return "Test already exist"
-    with open("testcases/" + filename, 'w') as test_file:
-        test_file.write(file)
-        test_file.close()
-    return "Success"
-
-def get_unit_tests():
-    database_conn = DatabaseConnection()
-    unit_tests_list = []
-    for unit_test_info in database_conn.get_unit_tests():
-        unit_tests_list.append({
-            "testname": unit_test_info["testname"],
-            "isActive": unit_test_info["isActive"]
-        })
-    return unit_tests_list
-
-def activate_test(testname):
-    database_conn = DatabaseConnection()
-    database_conn.change_unit_test_status(testname, 'true')
-
-def disable_test(testname):
-    database_conn = DatabaseConnection()
-    database_conn.change_unit_test_status(testname, 'false')
+    def get_active_tests(self):
+        f = open("active_tests.json", "r")
+        return bson.json_util.loads(f.read())

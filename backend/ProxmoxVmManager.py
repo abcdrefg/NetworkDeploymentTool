@@ -1,5 +1,3 @@
-
-
 class ProxmoxVmBuilder:
 
     def __init__(self, proxmox_config, initial_ip_address):

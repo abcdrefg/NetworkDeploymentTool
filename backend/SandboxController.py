@@ -6,6 +6,9 @@ from VyRouterAuthData import CommandLineAuthData
 from VyTelnetConnection import VyTelnetConnection
 from SandboxTestServer import SandboxTestServer
 from time import sleep
+from bson.json_util import dumps
+import os
+
 class SandboxController:
 
     def __init__(self):
@@ -55,5 +58,15 @@ class SandboxController:
             VyTelnetConnection(CommandLineAuthData(router.console_host, 'vyos', 'vyos', str(router.console))).load_config_commands(configs_by_router_name[router_id])
 
     def prepare_test_server(self):
+        self.__create_net_devices_json_files()
         self.__server_manager = SandboxTestServer(self.__db_conn.get_server_image_name(), self.__db_conn.get_server_ip_address())
+        os.remove("testcases/net_devices.json")
+        os.remove("testcases/active_tests.json")
 
+    def __create_net_devices_json_files(self):
+        json_object = dumps(self.__db_conn.get_devices())
+        with open("net_devices.json", "w") as outfile:
+            outfile.write(json_object)
+        json_object = dumps(self.__db_conn.get_active_tests())
+        with open("active_tests.json", "w") as outfile:
+            outfile.write(json_object)

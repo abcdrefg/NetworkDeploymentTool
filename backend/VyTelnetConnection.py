@@ -16,13 +16,6 @@ class VyTelnetConnection:
         self.connection.read_until(self.VYOS_PASSWORD_INDICATOR.encode('ascii'))
         self.connection.write(credentials.password.encode('ascii') + b"\n")
         sleep(1)
-        # self.connection = ConnectHandler(**{
-        #   "device_type": credentials.device_type,
-        #   "host": credentials.host,
-        #   "username": credentials.username,
-        #   "password": credentials.password,
-        #   "port": credentials.port,
-        # })
 
     def load_config_commands(self, config_commands):
         print(config_commands)

@@ -33,7 +33,6 @@ from VySSHConnection import VySSHConnection
 from VyRouterAuthData import CommandLineAuthData
 
 for credentials in DatabaseConnection().get_devices():
-    print(credentials['name'])
     configs_by_router_name[credentials['name']] = VySSHConnection(CommandLineAuthData(credentials['host'], credentials['username'], credentials['password'])).get_config_as_commands()
 
 sandbox_controller.write_configs_to_routers(configs_by_router_name)

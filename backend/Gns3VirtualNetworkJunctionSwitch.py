@@ -1,5 +1,3 @@
-
-
 class Gns3VirtualNetworkJunctionSwitch:
 
     def __init__(self, gns3Switch):
