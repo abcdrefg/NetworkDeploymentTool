@@ -59,9 +59,12 @@ class SandboxController:
 
     def prepare_test_server(self):
         self.__create_net_devices_json_files()
-        self.__server_manager = SandboxTestServer(self.__db_conn.get_server_image_name(), self.__db_conn.get_server_ip_address())
-        os.remove("testcases/net_devices.json")
-        os.remove("testcases/active_tests.json")
+        self.__server_manager = SandboxTestServer(self.__db_conn.get_server_image_name(), self.__db_conn.get_server_ip_address(), 'localhost', 5011)
+        try:
+            os.remove("net_devices.json")
+            os.remove("active_tests.json")
+        except:
+            print("No data to clean")
 
     def __create_net_devices_json_files(self):
         json_object = dumps(self.__db_conn.get_devices())
@@ -70,3 +73,6 @@ class SandboxController:
         json_object = dumps(self.__db_conn.get_active_tests())
         with open("active_tests.json", "w") as outfile:
             outfile.write(json_object)
+
+    def execute_tests(self):
+        return self.__server_manager.execute_tests()

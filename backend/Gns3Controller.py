@@ -1,7 +1,7 @@
 import gns3fy
 from time import sleep
 TESTBED_SERVER_NAME = 'sandbox-server'
-VYOS_TEMPLATE_NAME = 'VyOS'
+VYOS_TEMPLATE_NAME = 'VyOs'
 ETHERNET_SWITCH = 'Ethernet switch'
 
 

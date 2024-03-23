@@ -1,20 +1,17 @@
 from pyats import aetest
 from TestbedManager import TestbedManager
+class CommonSetup(aetest.CommonSetup):
+    @aetest.subsection
+    def connect(self):
+        devices = TestbedManager().get_devices()
+        pass
 
+    @aetest.test
+    def test01(self):
+        assert 0 == 1
 
-class R3RoutingTest(TestbedManager):
-
-    def __init__(self):
-        super().__init__()
-
-    def start_tests(self):
-        self.check_lsa_routers()
-
-    def check_lsa_routers(self):
-        r3 = self.devices["R3"]
-        summary_out = r3.get_eth_ints()
-        assert len(summary_out) > 0
-        return True
+    def test02(self):
+        assert  1==1
 
 if __name__ == '__main__':
-    R3RoutingTest().start_tests()
+    aetest.main()
