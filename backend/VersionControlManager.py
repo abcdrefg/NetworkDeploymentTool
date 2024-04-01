@@ -1,18 +1,18 @@
 from DatabaseConnection import DatabaseConnection
-from DeviceLoader import get_devices_running_confs
 from datetime import datetime
 import difflib
 import io
 import re
+from VySSHConnection import VySSHConnection
+from VyRouterAuthData import CommandLineAuthData
 
 class VersionControlManager:
 
     def generate_config(self, is_current_config):
         database_conn = DatabaseConnection()
-        device_conf_list = get_devices_running_confs(database_conn.get_devices())
         devices_configs_map = {}
-        for device_conf_wrapper in device_conf_list:
-            devices_configs_map[device_conf_wrapper["name"]] = device_conf_wrapper["config"]
+        for device in database_conn.get_devices():
+            devices_configs_map[device["name"]] = VySSHConnection(CommandLineAuthData(device["host"], device["username"], device["password"])).get_config_as_commands()
         version_control_object = {}
         version_control_object["configs"] = devices_configs_map
         version_control_object["timestamp"] = datetime.now()
@@ -20,10 +20,10 @@ class VersionControlManager:
 
     def generate_diff_with_current_config(self):
         database_conn = DatabaseConnection()
-        running_device_conf_list = get_devices_running_confs(database_conn.get_devices())
         running_devices_configs_map = {}
-        for device_conf_wrapper in running_device_conf_list:
-            running_devices_configs_map[device_conf_wrapper["name"]] = device_conf_wrapper["config"]
+        for device in database_conn.get_devices():
+            running_devices_configs_map[device["name"]] = VySSHConnection(
+                CommandLineAuthData(device["host"], device["username"], device["password"])).get_config_as_commands()
         try:
             curr_devices_configs_map = database_conn.get_current_configs()
         except:
@@ -33,10 +33,10 @@ class VersionControlManager:
 
     def generate_diff_from_spec_conf(self, version_id):
         database_conn = DatabaseConnection()
-        running_device_conf_list = get_devices_running_confs(database_conn.get_devices())
         running_devices_configs_map = {}
-        for device_conf_wrapper in running_device_conf_list:
-            running_devices_configs_map[device_conf_wrapper["name"]] = device_conf_wrapper["config"]
+        for device in database_conn.get_devices():
+            running_devices_configs_map[device["name"]] = VySSHConnection(
+                CommandLineAuthData(device["host"], device["username"], device["password"])).get_config_as_commands()
         curr_devices_configs_map = database_conn.get_config_version_by_id(version_id)
         return self.diffrences_generator(curr_devices_configs_map, running_devices_configs_map)
 

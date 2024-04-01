@@ -36,11 +36,9 @@ export class ConfigurationPageComponent implements OnInit {
     this.deviceService.getDeviceDatabase().subscribe(
       (deviceConfigsData) => {
         this.deviceConfigs = deviceConfigsData;
-        this.isFetchingDevices = false;
       },
       (error) => {
         console.log("ERORR", error);
-        this.isFetchingDevices = false;
       }
     )
   } 
@@ -92,13 +90,16 @@ export class ConfigurationPageComponent implements OnInit {
   }
 
   getCommands() {
+    this.isFetchingDevices = true;
     this.configurationService.getCommands().subscribe(
       (deviceCommandsData) => {
         this.deviceCommands = deviceCommandsData;
         console.log(this.deviceCommands);
+        this.isFetchingDevices = false;
       },
       (error) => {
         console.log("ERORR", error);
+        this.isFetchingDevices = false;
       }
     )
   }

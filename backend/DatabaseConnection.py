@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
-from DeviceLoader import ConnectionWrapper
 
 class DatabaseConnection:
     client = MongoClient("mongodb://localhost:27017/")
@@ -23,6 +22,13 @@ class DatabaseConnection:
             return user["_id"]
         return False
 
+    def insert_user(self, username, password):
+        collection = self.database_name[self.user_collection]
+        collection.insert_one({
+            "username": username,
+            "password": generate_password_hash(password)
+        })
+
     def check_password(self, passwordHash, password):
         return check_password_hash(passwordHash, password)
 
@@ -32,12 +38,6 @@ class DatabaseConnection:
         if not (self.check_password(user.get('password'), oldPassword)):
             return False
         return True
-
-    def get_device_connection_configs_map(self):
-        device_conn_map = {}
-        for device_conn_conf in self.get_devices():
-            device_conn_map[device_conn_conf["name"]] = ConnectionWrapper(device_conn_conf)
-        return device_conn_map
 
     def insert_device(self, device):
         collection = self.database_name[self.devices_collection]
@@ -62,7 +62,6 @@ class DatabaseConnection:
     def upsert_commands(self, deviceCommands):
         collection = self.database_name[self.commands_collection]
         list_to_insert = []
-        list_to_update = []
         for device in deviceCommands:
             if collection.find_one({"name": device["name"]}) == None:
                 list_to_insert.append(device)

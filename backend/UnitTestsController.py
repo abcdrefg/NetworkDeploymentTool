@@ -12,15 +12,14 @@ class UnitTestsController:
 
     @unit_test_controller.route('/getTests', methods=['GET'])
     def get_tests():
-        return 'x'
-        # return get_unit_tests()
+        return get_unit_tests()
 
     @unit_test_controller.route('disableTest', methods=['POST'])
     def disable_test():
         if not request.is_json:
             return bad_request
         json_data = request.get_json()
-        # disable_test(json_data["testname"])
+        disable_test(json_data["testname"])
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
     @unit_test_controller.route('activateTest', methods=['POST'])
@@ -28,7 +27,7 @@ class UnitTestsController:
         if not request.is_json:
             return bad_request
         json_data = request.get_json()
-        # activate_test(json_data["testname"])
+        activate_test(json_data["testname"])
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
     @unit_test_controller.route('insertTest', methods=['POST'])
@@ -36,5 +35,5 @@ class UnitTestsController:
         if not request.is_json:
             return bad_request
         json_data = request.get_json()
-        # add_test(json_data["file"], json_data["filename"])
+        add_test(json_data["file"], json_data["filename"])
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

@@ -16,3 +16,10 @@ class VySSHConnection:
     def get_config_as_commands(self):
         output = self.connection.send_command('show config commands')
         return output
+
+    def check_connection(self):
+        try:
+            self.connection.send_command('show config commands')
+        except:
+            return False
+        return True

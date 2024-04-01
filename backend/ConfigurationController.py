@@ -1,7 +1,8 @@
 import json
 from flask import Blueprint, request, jsonify
 from DatabaseConnection import DatabaseConnection
-from DeviceLoader import ConnectionWrapper, check_connection, get_running_config, get_devices_running_confs
+from VyRouterAuthData import CommandLineAuthData
+from VySSHConnection import VySSHConnection
 
 configuration_controller = Blueprint('configuration_controller', __name__)
 bad_request = {
@@ -14,12 +15,21 @@ class ConfigurationController:
 
     @configuration_controller.route('/getCommands', methods=['GET'])
     def get_commands():
-        database_cursor = DatabaseConnection()
-        devices_with_commands = database_cursor.get_device_commands()
-        list_of_devices_with_commands = []
-        for device in devices_with_commands:
-            list_of_devices_with_commands.append(CommandWrapper(device["name"], device["commands"]).__dict__)
-        return list_of_devices_with_commands
+        database_conn = DatabaseConnection()
+        running_confs = []
+        device_commands = database_conn.get_device_commands()
+        for device in database_conn.get_devices():
+            db_commands = list(filter(lambda x: x["name"] == device["name"], device_commands))
+            if len(db_commands) == 0:
+                db_commands = VySSHConnection(CommandLineAuthData(device["host"], device["username"],
+                                                                  device["password"])).get_config_as_commands()
+            else:
+                db_commands = db_commands[0]
+            running_confs.append({
+                "name": device["name"],
+                "commands": db_commands
+            })
+        return running_confs
 
     @configuration_controller.route('/upsertCommands', methods=['PUT'])
     def upsert_commands():

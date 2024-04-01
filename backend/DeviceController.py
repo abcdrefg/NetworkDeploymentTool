@@ -1,7 +1,9 @@
 import json
 from flask import Blueprint, request, jsonify
 from DatabaseConnection import DatabaseConnection
-from DeviceLoader import ConnectionWrapper, check_connection, get_running_config, get_devices_running_confs, ConfigsWrapper
+
+from VySSHConnection import VySSHConnection
+from VyRouterAuthData import CommandLineAuthData
 
 device_controller = Blueprint('device_controller', __name__)
 bad_request = {
@@ -20,10 +22,10 @@ class DeviceAddController:
         if json_data["deviceType"] == None or json_data["username"] == None or json_data["host"] == None or json_data["password"] == None or json_data["name"] == None:
             print(json_data)
             return bad_request
-        connection_wrapper = ConnectionWrapper(json_data)
-        if not check_connection(connection_wrapper):
+        connection = VySSHConnection(CommandLineAuthData(json_data["host"], json_data["username"], json_data["password"]))
+        if not connection.check_connection():
             print("bad connection when adding")
-            # return bad_request
+            return bad_request
         try:
             database_conn = DatabaseConnection()
             database_conn.insert_device(json_data)
@@ -35,15 +37,26 @@ class DeviceAddController:
     @device_controller.route('/getRunningConfigs', methods=['GET'])
     def get_running_configs():
         database_conn = DatabaseConnection()
-        running_confs = get_devices_running_confs(database_conn.get_devices())
+        running_confs = []
+        for device in database_conn.get_devices():
+            running_confs.append(
+                {
+                    "name": device["name"],
+                    "config": VySSHConnection(CommandLineAuthData(device["host"], device["username"], device["password"])).get_config_as_commands(),
+                    "secret": device["secret"],
+                    "password": device["password"],
+                    "username": device["username"],
+                    "host": device["host"],
+                    "deviceType": device["deviceType"]
+                }
+            )
         return running_confs
 
     @device_controller.route('/getDatabaseConfigs', methods=['GET'])
     def get_conn_configs_from_database():
         database_conn = DatabaseConnection()
-        device_conns = database_conn.get_devices()
-        device_conns_wrappers = []
-        for device_conn in device_conns:
-            device_conns_wrappers.append(ConfigsWrapper(ConnectionWrapper(device_conn), '').__dict__)
-        return device_conns_wrappers
+        db_devices = []
+        for device in database_conn.get_devices():
+            db_devices.append({"name": device["name"], "host": device["host"]})
+        return db_devices
 

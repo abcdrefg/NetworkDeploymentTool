@@ -1,6 +1,5 @@
 from DatabaseConnection import DatabaseConnection
-from netmiko import ConnectHandler
-from DeviceLoader import ConnectionWrapper
+
 
 class DeviceConfigManager:
 
