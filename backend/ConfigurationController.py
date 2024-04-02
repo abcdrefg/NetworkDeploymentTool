@@ -24,7 +24,7 @@ class ConfigurationController:
                 db_commands = VySSHConnection(CommandLineAuthData(device["host"], device["username"],
                                                                   device["password"])).get_config_as_commands()
             else:
-                db_commands = db_commands[0]
+                db_commands = db_commands[0]["commands"]
             running_confs.append({
                 "name": device["name"],
                 "commands": db_commands

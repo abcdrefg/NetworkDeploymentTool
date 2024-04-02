@@ -18,7 +18,6 @@ class VyTelnetConnection:
         sleep(1)
 
     def load_config_commands(self, config_commands):
-        print(config_commands)
         self.__enter_config_mode()
         for command in config_commands:
             self.__send_single_command(command)

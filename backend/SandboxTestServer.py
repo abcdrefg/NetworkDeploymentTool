@@ -9,9 +9,10 @@ import json
 class SandboxTestServer:
 
     __net_devices_json = "net_devices.json"
-    NUM_OF_POLLS = 10
+    NUM_OF_POLLS = 3
     POLLS_TIMEOUT = 30
     current_poll = 0
+    COMMAND_TIMEOUT = 0.05
 
     def __init__(self, sandbox_server_name, ip_address, telnet_host, telnet_port):
         self.sandbox_server_name = sandbox_server_name
@@ -42,9 +43,7 @@ class SandboxTestServer:
         self.container.exec_run(f'ifconfig eth0 {ip_address}')
 
     def execute_tests(self):
-        self.__telnet_connection.write(b"cd /home/TestController \n")
-        self.__telnet_connection.write(b"source controller_env/bin/activate \n")
-        self.__telnet_connection.write(b"python3 UnitTestController.py \n")
+        self.container.exec_run('./home/TestController/test_exec.sh')
         return self.__poll_for_results()
 
     def __poll_for_results(self):
@@ -56,4 +55,4 @@ class SandboxTestServer:
             if current_poll >= self.NUM_OF_POLLS:
                 return []
             sleep(self.POLLS_TIMEOUT)
-            self.__poll_for_results()
+            return self.__poll_for_results()
