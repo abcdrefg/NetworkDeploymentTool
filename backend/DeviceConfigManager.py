@@ -19,9 +19,11 @@ class DeviceConfigManager:
 
     def deploy_config(self):
         error_array = []
+        connections = []
         for device in DatabaseConnection().get_devices():
             commands = self.configs_by_name[device["name"]]
             connection = VySSHConnection(CommandLineAuthData(device["host"], device["username"], device["password"]))
+            connections.append(connection)
             errors = connection.send_command_set(commands)
             if len(errors) > 0:
                 error_dict = {}
@@ -30,6 +32,9 @@ class DeviceConfigManager:
                 error_array.append(error_dict)
         if len(error_array) > 0:
             return error_array
+        for conn in connections:
+            conn.commit()
+            conn.save()
         return 'success'
 
     def deploy_test_config(self):

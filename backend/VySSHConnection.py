@@ -38,4 +38,10 @@ class VySSHConnection:
         return True
 
     def rollback(self):
-        print(self.connection.send_command('rollback'))
+        self.connection.send_command('rollback')
+
+    def commit(self):
+        self.connection.send_command('commit')
+
+    def save(self):
+        self.connection.send_command('save')

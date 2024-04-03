@@ -21,25 +21,6 @@ running_app.register_blueprint(unit_test_controller, url_prefix='/unitTestContro
 running_app.register_blueprint(statistics_controller, url_prefix='/statisticsService')
 CORS(running_app)
 
-
-from DatabaseConnection import DatabaseConnection
-from SandboxController import SandboxController
-
-sandbox_controller = SandboxController()
-sandbox_controller.create_sandbox()
-configs_by_router_name = {}
-
-from VySSHConnection import VySSHConnection
-from VyRouterAuthData import CommandLineAuthData
-
-for credentials in DatabaseConnection().get_devices():
-    configs_by_router_name[credentials['name']] = VySSHConnection(CommandLineAuthData(credentials['host'], credentials['username'], credentials['password'])).get_config_as_commands()
-
-sandbox_controller.write_configs_to_routers(configs_by_router_name)
-
-sandbox_controller.prepare_test_server()
-print(sandbox_controller.execute_tests())
-
 if __name__ == '__main__':
     running_app.run(host='localhost')
 

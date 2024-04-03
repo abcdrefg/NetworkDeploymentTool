@@ -18,8 +18,6 @@ class SandboxTestServer:
         self.sandbox_server_name = sandbox_server_name
         self.client = docker.from_env()
         self.container = None
-        self.__telnet_connection = Telnet(telnet_host, telnet_port)
-
         for container in self.client.containers.list():
             self.container = container
         if self.container is None:
@@ -43,7 +41,7 @@ class SandboxTestServer:
         self.container.exec_run(f'ifconfig eth0 {ip_address}')
 
     def execute_tests(self):
-        self.container.exec_run('./home/TestController/test_exec.sh')
+        self.container.exec_run(['/bin/bash', '/home/TestController/test_exec.sh'])
         return self.__poll_for_results()
 
     def __poll_for_results(self):
