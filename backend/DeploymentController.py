@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify
 from DeviceConfigManager import DeviceConfigManager
 from DatabaseConnection import DatabaseConnection
 from VersionControlManager import VersionControlManager
-from UnitTestManager import UnitTestManager
+from SandboxController import SandboxController
 
 deployment_controller = Blueprint('deployment_controller', __name__)
 
@@ -83,12 +83,16 @@ class DeploymentController():
 
     @deployment_controller.route('/runTests', methods=['GET'])
     def run_test():
-        dcm = DeviceConfigManager()
-        rollback_map = dcm.get_rollback_conf()
-        syntax_err = dcm.deploy_test_config()
-        if len(syntax_err) > 0:
-            return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-        utm = UnitTestManager()
-        results = utm.execute()
-        dcm.rollback_configs(rollback_map)
+        sandbox_controller = SandboxController()
+        sandbox_controller.create_sandbox()
+        configs_by_router_name = {}
+
+        for device_configs_to_deploy in DatabaseConnection().get_device_commands():
+             configs_by_router_name[device_configs_to_deploy['name']] = device_configs_to_deploy["commands"]
+
+        sandbox_controller.write_configs_to_routers(configs_by_router_name)
+
+        sandbox_controller.prepare_test_server()
+        results = sandbox_controller.execute_tests()
+        print(results)
         return results

@@ -1,8 +1,6 @@
 from pymongo import MongoClient
-import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
-from DeviceLoader import ConnectionWrapper
 
 class DatabaseConnection:
     client = MongoClient("mongodb://localhost:27017/")
@@ -24,6 +22,13 @@ class DatabaseConnection:
             return user["_id"]
         return False
 
+    def insert_user(self, username, password):
+        collection = self.database_name[self.user_collection]
+        collection.insert_one({
+            "username": username,
+            "password": generate_password_hash(password)
+        })
+
     def check_password(self, passwordHash, password):
         return check_password_hash(passwordHash, password)
 
@@ -32,15 +37,7 @@ class DatabaseConnection:
         user = collection.find_one({"_id": ObjectId(id)})
         if not (self.check_password(user.get('password'), oldPassword)):
             return False
-        newUser = {"$set": {"password": generate_password_hash(newPassword)}}
-        updateResult = collection.update_one(user, newUser)  # toRead
         return True
-
-    def get_device_connection_configs_map(self):
-        device_conn_map = {}
-        for device_conn_conf in self.get_devices():
-            device_conn_map[device_conn_conf["name"]] = ConnectionWrapper(device_conn_conf)
-        return device_conn_map
 
     def insert_device(self, device):
         collection = self.database_name[self.devices_collection]
@@ -65,7 +62,6 @@ class DatabaseConnection:
     def upsert_commands(self, deviceCommands):
         collection = self.database_name[self.commands_collection]
         list_to_insert = []
-        list_to_update = []
         for device in deviceCommands:
             if collection.find_one({"name": device["name"]}) == None:
                 list_to_insert.append(device)
@@ -154,3 +150,18 @@ class DatabaseConnection:
     def get_active_tests(self):
         collection = self.database_name[self.unit_tests]
         return collection.find({"isActive": "true"})
+
+    def get_server_attachement_network(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        return status["AttachemendPoint"]
+
+    def get_server_image_name(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        return status["ImageName"]
+
+    def get_server_ip_address(self):
+        collection = self.database_name[self.deployment_status]
+        status = collection.find_one()
+        return status["SrvAddress"]

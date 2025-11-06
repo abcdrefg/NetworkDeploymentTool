@@ -20,7 +20,7 @@ export class DevicesPageComponent implements OnInit {
   password: string = '';
   host: string = '';
   secret: string = '';
-  deviceType: string = 'router';
+  deviceType: string = 'vyos';
   deviceName: string = '';
   currentConfig: string = '';
   deviceConfigs: RunningConfig[] = [];
