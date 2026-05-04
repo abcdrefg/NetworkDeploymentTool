@@ -3,6 +3,7 @@ from pyats import aetest
 import time
 import bson.json_util
 
+
 class UnitTestManager:
 
     def execute(self):
@@ -12,8 +13,8 @@ class UnitTestManager:
     def get_active_test_files(self):
         active_tests_names = self.get_active_test_names()
         test_files = self.get_test_files()
-        test_files = map(lambda file : file.replace('testcases/', ''), test_files)
-        return filter(lambda file : file in active_tests_names, test_files)
+        test_files = map(lambda file: file.replace('testcases/', ''), test_files)
+        return filter(lambda file: file in active_tests_names, test_files)
 
     def get_active_test_names(self):
         active_tests = self.get_active_tests()
@@ -30,7 +31,7 @@ class UnitTestManager:
         for test in tests_list:
             time.sleep(1)
             try:
-                result = aetest.main(testable = 'testcases/' + test)
+                result = aetest.main(testable='testcases/' + test)
             except:
                 result = 'invalid test'
             results_list.append({

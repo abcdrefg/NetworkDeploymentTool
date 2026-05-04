@@ -48,10 +48,6 @@ class SandboxController:
         self.__server_node = self.__gns3_controller.create_server_node()
         self.__gns3_controller.create_link_to_network(self.__network_switches[self.__db_conn.get_server_attachement_network()], self.__server_node, 'eth0')
 
-    def __start_routers(self):
-        for router_id in self.__routers:
-            self.__routers[router_id].start()
-
     def write_configs_to_routers(self, configs_by_router_name):
         for router_id in configs_by_router_name:
             router = self.__routers[router_id]

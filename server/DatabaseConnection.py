@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from bson.objectid import ObjectId
 
 class DatabaseConnection:
@@ -21,13 +21,6 @@ class DatabaseConnection:
         if self.check_password(user["password"], password):
             return user["_id"]
         return False
-
-    def insert_user(self, username, password):
-        collection = self.database_name[self.user_collection]
-        collection.insert_one({
-            "username": username,
-            "password": generate_password_hash(password)
-        })
 
     def check_password(self, passwordHash, password):
         return check_password_hash(passwordHash, password)

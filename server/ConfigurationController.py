@@ -47,10 +47,3 @@ class ConfigurationController:
         if deploy_stat["SyntaxTest"] == "True":
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
-
-
-class CommandWrapper:
-
-    def __init__(self, name, commands):
-        self.name = name
-        self.commands = commands
