@@ -1,15 +1,16 @@
 import json
 
 from flask import Blueprint, request, jsonify
-from DeviceConfigManager import DeviceConfigManager
-from DatabaseConnection import DatabaseConnection
-from VersionControlManager import VersionControlManager
-from SandboxController import SandboxController
+
+from core.DatabaseConnection import DatabaseConnection
+from core.DeviceConfigManager import DeviceConfigManager
+from core.VersionControlManager import VersionControlManager
+from sandbox.SandboxController import SandboxController
 
 deployment_controller = Blueprint('deployment_controller', __name__)
 
-class DeploymentController():
 
+class DeploymentController:
     @deployment_controller.route('/testConfigs', methods=['GET'])
     def test_configs():
         manager = DeviceConfigManager()
@@ -20,7 +21,7 @@ class DeploymentController():
     def get_deployment_status():
         database_conn = DatabaseConnection()
         status = database_conn.get_deployment_status()
-        deploy_status = "SyntaxTest";
+        deploy_status = "SyntaxTest"
         if status["SyntaxTest"] == "True":
             deploy_status = "UnitTest"
         if status["UnitTest"] == "True":
@@ -42,7 +43,7 @@ class DeploymentController():
     @deployment_controller.route('/deployConfigurations', methods=['GET'])
     def deploy_configurations():
         manager = DeviceConfigManager()
-        status = manager.deploy_config();
+        status = manager.deploy_config()
         if status == 'success':
             database_conn = DatabaseConnection()
             database_conn.finish_deploy()
@@ -88,7 +89,7 @@ class DeploymentController():
         configs_by_router_name = {}
 
         for device_configs_to_deploy in DatabaseConnection().get_device_commands():
-             configs_by_router_name[device_configs_to_deploy['name']] = device_configs_to_deploy["commands"]
+            configs_by_router_name[device_configs_to_deploy['name']] = device_configs_to_deploy["commands"]
 
         sandbox_controller.write_configs_to_routers(configs_by_router_name)
 

@@ -1,9 +1,10 @@
 import json
-from flask import Blueprint, request, jsonify
-from DatabaseConnection import DatabaseConnection
 
-from VySSHConnection import VySSHConnection
-from VyRouterAuthData import CommandLineAuthData
+from flask import Blueprint, request, jsonify
+
+from core.DatabaseConnection import DatabaseConnection
+from vyos.VySSHConnection import VySSHConnection
+from vyos.VyRouterAuthData import CommandLineAuthData
 
 device_controller = Blueprint('device_controller', __name__)
 bad_request = {
@@ -12,8 +13,8 @@ bad_request = {
                       'Error': 'Wrong data.',
                   }, 400
 
-class DeviceAddController:
 
+class DeviceAddController:
     @device_controller.route('/addDevice', methods=['POST'])
     def add_device():
         if not request.is_json:
@@ -59,4 +60,3 @@ class DeviceAddController:
         for device in database_conn.get_devices():
             db_devices.append({"name": device["name"], "host": device["host"]})
         return db_devices
-

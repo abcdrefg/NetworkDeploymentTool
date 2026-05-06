@@ -1,12 +1,14 @@
-from netmiko import ConnectHandler
 from telnetlib import Telnet
-from VyRouterAuthData import CommandLineAuthData
 from time import sleep
-class VyTelnetConnection:
 
+from vyos.VyRouterAuthData import CommandLineAuthData
+
+
+class VyTelnetConnection:
     VYOS_LOGIN_INDICATOR = "vyos login: "
     VYOS_PASSWORD_INDICATOR = "Password: "
     TIMEOUT_BETWEEN_COMMANDS = 0.05
+
     def __init__(self, credentials: CommandLineAuthData):
         self.credentials = credentials
         self.connection = Telnet(credentials.host, credentials.port)

@@ -1,9 +1,10 @@
 import bson.json_util
-from VyAPIConnection import VyAPIConnection
-from VyRouterAuthData import ApiAuthData
+
+from vyos.VyAPIConnection import VyAPIConnection
+from vyos.VyRouterAuthData import ApiAuthData
+
 
 class TestbedManager:
-
     def get_devices(self):
         f = open("net_devices.json", "r")
         network_dev_data = bson.json_util.loads(f.read())

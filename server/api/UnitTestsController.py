@@ -1,6 +1,8 @@
-from flask import Blueprint, request, jsonify
 import json
-from DatabaseConnection import DatabaseConnection
+
+from flask import Blueprint, request, jsonify
+
+from core.DatabaseConnection import DatabaseConnection
 
 unit_test_controller = Blueprint('unit_test_controller', __name__)
 bad_request = {
@@ -9,8 +11,8 @@ bad_request = {
                       'Error': 'Wrong data.',
                   }, 400
 
-class UnitTestsController:
 
+class UnitTestsController:
     @unit_test_controller.route('/getTests', methods=['GET'])
     def get_tests():
         return get_unit_tests()
@@ -39,6 +41,7 @@ class UnitTestsController:
         add_test(json_data["file"], json_data["filename"])
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
+
 def add_test(file, filename):
     database_conn = DatabaseConnection()
     try:
@@ -53,6 +56,7 @@ def add_test(file, filename):
         test_file.close()
     return "Success"
 
+
 def get_unit_tests():
     database_conn = DatabaseConnection()
     unit_tests_list = []
@@ -63,9 +67,11 @@ def get_unit_tests():
         })
     return unit_tests_list
 
+
 def activate_test(testname):
     database_conn = DatabaseConnection()
     database_conn.change_unit_test_status(testname, 'true')
+
 
 def disable_test(testname):
     database_conn = DatabaseConnection()

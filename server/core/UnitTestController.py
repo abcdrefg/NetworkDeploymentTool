@@ -1,12 +1,14 @@
-from UnitTestManager import UnitTestManager
-from TestbedManager import TestbedManager
 import os
 from json import dumps
+
+from core.TestbedManager import TestbedManager
+from SandboxInternalTestController import SandboxInternalTestController
+
 
 if __name__ == '__main__':
     os.remove('test_results.json')
     TestbedManager().get_devices()
-    unit_test_manager = UnitTestManager()
+    unit_test_manager = SandboxInternalTestController()
     test_results = unit_test_manager.execute()
     with open("test_results.json", "w") as outfile:
         outfile.write(dumps(test_results))

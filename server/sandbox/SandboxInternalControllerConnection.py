@@ -1,13 +1,14 @@
+import json
+import os
 import tarfile
+from time import sleep
 
 import docker
-from UnitTestManager import UnitTestManager
-import os
-from telnetlib import Telnet
-from time import sleep
-import json
-class SandboxTestServer:
 
+from SandboxInternalTestController import SandboxInternalTestController
+
+
+class SandboxInternalControllerConnection:
     __net_devices_json = "net_devices.json"
     NUM_OF_POLLS = 3
     POLLS_TIMEOUT = 30
@@ -22,7 +23,7 @@ class SandboxTestServer:
             self.container = container
         if self.container is None:
             raise Exception("Server container missing")
-        self.unit_test_manager = UnitTestManager()
+        self.unit_test_manager = SandboxInternalTestController()
         for test_file in self.unit_test_manager.get_test_files():
             self.__copy_to(test_file, f'home/TestController/')
 

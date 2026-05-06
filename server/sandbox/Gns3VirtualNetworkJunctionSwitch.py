@@ -1,5 +1,4 @@
 class Gns3VirtualNetworkJunctionSwitch:
-
     def __init__(self, gns3Switch):
         self.__switch = gns3Switch
         self.__free_ports = gns3Switch.ports

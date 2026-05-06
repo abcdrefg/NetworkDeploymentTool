@@ -1,16 +1,16 @@
 import gns3fy
 from time import sleep
+
 TESTBED_SERVER_NAME = 'sandbox-server'
 VYOS_TEMPLATE_NAME = 'VyOs'
 ETHERNET_SWITCH = 'Ethernet switch'
 
 
 class Gns3Controller:
-
     __project_id = ''
     __project = None
     __gns3_server = None
-    
+
     def __init__(self):
         self.__gns3_server = gns3fy.Gns3Connector("http://localhost:3080")
         project = gns3fy.Project(name='MgrMain', connector=self.__gns3_server)
@@ -52,9 +52,3 @@ class Gns3Controller:
         sleep(1)
         self.__project.start_nodes()
         sleep(5)
-
-
-
-
-
-

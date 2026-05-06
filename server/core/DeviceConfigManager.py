@@ -1,8 +1,9 @@
-from DatabaseConnection import DatabaseConnection
-from VySSHConnection import VySSHConnection
-from VyRouterAuthData import CommandLineAuthData
-class DeviceConfigManager:
+from core.DatabaseConnection import DatabaseConnection
+from vyos.VySSHConnection import VySSHConnection
+from vyos.VyRouterAuthData import CommandLineAuthData
 
+
+class DeviceConfigManager:
     configs_by_name = {}
     device_conn_by_name = {}
 

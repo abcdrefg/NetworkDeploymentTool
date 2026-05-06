@@ -1,13 +1,14 @@
-from DatabaseConnection import DatabaseConnection
 from datetime import datetime
 import difflib
 import io
 import re
-from VySSHConnection import VySSHConnection
-from VyRouterAuthData import CommandLineAuthData
+
+from core.DatabaseConnection import DatabaseConnection
+from vyos.VySSHConnection import VySSHConnection
+from vyos.VyRouterAuthData import CommandLineAuthData
+
 
 class VersionControlManager:
-
     def generate_config(self, is_current_config):
         database_conn = DatabaseConnection()
         devices_configs_map = {}

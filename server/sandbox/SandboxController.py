@@ -1,16 +1,18 @@
-from Gns3Controller import Gns3Controller
-from VyNetworkMapper import VyNetworkMapper
-from DatabaseConnection import DatabaseConnection
-from Gns3VirtualNetworkJunctionSwitch import Gns3VirtualNetworkJunctionSwitch
-from VyRouterAuthData import CommandLineAuthData
-from VyTelnetConnection import VyTelnetConnection
-from SandboxTestServer import SandboxTestServer
-from time import sleep
-from bson.json_util import dumps
 import os
+from time import sleep
+
+from bson.json_util import dumps
+
+from core.DatabaseConnection import DatabaseConnection
+from sandbox.Gns3Controller import Gns3Controller
+from sandbox.Gns3VirtualNetworkJunctionSwitch import Gns3VirtualNetworkJunctionSwitch
+from sandbox.SandboxInternalControllerConnection import SandboxInternalControllerConnection
+from vyos.VyNetworkMapper import VyNetworkMapper
+from vyos.VyRouterAuthData import CommandLineAuthData
+from vyos.VyTelnetConnection import VyTelnetConnection
+
 
 class SandboxController:
-
     def __init__(self):
         self.__gns3_controller = Gns3Controller()
         self.__db_conn = DatabaseConnection()
@@ -30,7 +32,6 @@ class SandboxController:
         self.create_test_server()
         self.__gns3_controller.start_topo()
         sleep(30)
-
 
     def create_junkction_switches(self, networks):
         for network in networks:
@@ -55,7 +56,7 @@ class SandboxController:
 
     def prepare_test_server(self):
         self.__create_net_devices_json_files()
-        self.__server_manager = SandboxTestServer(self.__db_conn.get_server_image_name(), self.__db_conn.get_server_ip_address(), 'localhost', 5011)
+        self.__server_manager = SandboxInternalControllerConnection(self.__db_conn.get_server_image_name(), self.__db_conn.get_server_ip_address(), 'localhost', 5011)
         try:
             os.remove("net_devices.json")
             os.remove("active_tests.json")

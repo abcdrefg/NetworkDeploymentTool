@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from werkzeug.security import check_password_hash
 from bson.objectid import ObjectId
 
+
 class DatabaseConnection:
     client = MongoClient("mongodb://localhost:27017/")
     database_name = client["NetworkDeployment"]
@@ -58,7 +59,7 @@ class DatabaseConnection:
         for device in deviceCommands:
             if collection.find_one({"name": device["name"]}) == None:
                 list_to_insert.append(device)
-                continue;
+                continue
             collection.update_one({"name": device["name"]}, {"$set": {"commands": device["commands"]}})
         if list_to_insert:
             collection.insert_many(list_to_insert)

@@ -1,11 +1,11 @@
 import glob
-from pyats import aetest
 import time
+
 import bson.json_util
+from pyats import aetest
 
 
-class UnitTestManager:
-
+class SandboxInternalTestController:
     def execute(self):
         test_results = self.run_testscripts(self.get_active_test_files())
         return test_results

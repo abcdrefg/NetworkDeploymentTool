@@ -1,8 +1,9 @@
 from netmiko import ConnectHandler
-from VyRouterAuthData import CommandLineAuthData
+
+from vyos.VyRouterAuthData import CommandLineAuthData
+
 
 class VySSHConnection:
-
     def __init__(self, credentials: CommandLineAuthData):
         self.credentials = credentials
         self.connection = ConnectHandler(**{

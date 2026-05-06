@@ -1,8 +1,10 @@
 import json
+
 from flask import Blueprint, request, jsonify
-from DatabaseConnection import DatabaseConnection
-from VyRouterAuthData import CommandLineAuthData
-from VySSHConnection import VySSHConnection
+
+from core.DatabaseConnection import DatabaseConnection
+from vyos.VyRouterAuthData import CommandLineAuthData
+from vyos.VySSHConnection import VySSHConnection
 
 configuration_controller = Blueprint('configuration_controller', __name__)
 bad_request = {
@@ -11,8 +13,8 @@ bad_request = {
                       'Error': 'Wrong data.',
                   }, 400
 
-class ConfigurationController:
 
+class ConfigurationController:
     @configuration_controller.route('/getCommands', methods=['GET'])
     def get_commands():
         database_conn = DatabaseConnection()
@@ -38,7 +40,7 @@ class ConfigurationController:
             return bad_request
         json_data = request.get_json()
         database_cursor.upsert_commands(json_data)
-        return json.dumps({'success': True}), 200, {'ContentType':'application/json'}
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
     @configuration_controller.route('/isEditEnabled', methods=['GET'])
     def is_edit_enabled():

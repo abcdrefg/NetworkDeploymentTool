@@ -1,9 +1,11 @@
-import requests
-from VyRouterAuthData import ApiAuthData
 import json
 
-class VyAPIConnection:
+import requests
 
+from vyos.VyRouterAuthData import ApiAuthData
+
+
+class VyAPIConnection:
     RETRIEVE_ENDPOINT = '/retrieve'
     SHOW_ENDPOINT = '/show'
 
@@ -33,6 +35,5 @@ class VyAPIConnection:
         data = {}
         data['op'] = action
         data['path'] = path
-        payload = {'data': json.dumps(data),'key': self.credentials.api_key}
+        payload = {'data': json.dumps(data), 'key': self.credentials.api_key}
         return requests.request("POST", url, headers={}, data=payload, verify=False)
-

@@ -1,8 +1,10 @@
-from VersionControlManager import VersionControlManager
-from flask import Blueprint, request, jsonify
-from DatabaseConnection import DatabaseConnection
-from DeviceConfigManager import DeviceConfigManager
 import json
+
+from flask import Blueprint, request, jsonify
+
+from core.DatabaseConnection import DatabaseConnection
+from core.DeviceConfigManager import DeviceConfigManager
+from core.VersionControlManager import VersionControlManager
 
 version_controller = Blueprint('version_controller', __name__)
 bad_request = {
@@ -11,12 +13,12 @@ bad_request = {
                   'Error': 'Wrong credentials.',
               }, 400
 
-class VersionController:
 
+class VersionController:
     @version_controller.route('/getHistoricalVersionDiff', methods=['POST'])
     def get_historical_version_diff():
         if not request.is_json:
-            return  bad_request
+            return bad_request
         json_data = request.get_json()
         if json_data["Id"] == None:
             return bad_request
@@ -39,7 +41,7 @@ class VersionController:
     @version_controller.route('/rollbackToId', methods=['POST'])
     def rollback_to_id():
         if not request.is_json:
-            return  bad_request
+            return bad_request
         json_data = request.get_json()
         if json_data["Id"] == None:
             return bad_request

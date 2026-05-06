@@ -1,8 +1,9 @@
-
-from DatabaseConnection import DatabaseConnection
-from VyRouterAuthData import ApiAuthData
-from VyAPIConnection import VyAPIConnection
 import ipaddress
+
+from core.DatabaseConnection import DatabaseConnection
+from vyos.VyRouterAuthData import ApiAuthData
+from vyos.VyAPIConnection import VyAPIConnection
+
 
 class VyNetworkMapper:
     __router_by_ip = {}
@@ -11,7 +12,7 @@ class VyNetworkMapper:
     __nodes = []
     __networks = []
 
-    def __init__(self, db_connection:DatabaseConnection):
+    def __init__(self, db_connection: DatabaseConnection):
         self.__db_connection = db_connection
         self.__get_connection_credentials_from_db()
 
@@ -33,7 +34,7 @@ class VyNetworkMapper:
             if not line.startswith('eth'):
                 continue
             columns = line.split()
-            ip_address.append((columns[0],columns[1]))
+            ip_address.append((columns[0], columns[1]))
         return ip_address
 
     def __group_ips_by_subnet(self):
@@ -41,7 +42,7 @@ class VyNetworkMapper:
 
         for ip in self.__router_by_ip:
             network_address = f'{ipaddress.IPv4Network(ip, strict=False).network_address}/{ipaddress.IPv4Network(ip, strict=False).netmask}'
-            if not network_address in networks:
+            if network_address not in networks:
                 networks[network_address] = []
             networks[network_address].append(ip)
 
@@ -60,12 +61,11 @@ class VyNetworkMapper:
                     networks.pop(possible_subnet, None)
         self.__networks = networks
 
-
     def __create_links(self, networks):
         self.__create_nodes(networks.keys())
         for network in networks:
             for address in networks[network]:
-                self.__links.append((network,self.__router_by_ip[address][0], self.__router_by_ip[address][1]))
+                self.__links.append((network, self.__router_by_ip[address][0], self.__router_by_ip[address][1]))
 
     def __create_nodes(self, networks):
         for network in networks:
