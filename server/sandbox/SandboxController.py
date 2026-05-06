@@ -7,9 +7,9 @@ from core.DatabaseConnection import DatabaseConnection
 from sandbox.Gns3Controller import Gns3Controller
 from sandbox.Gns3VirtualNetworkJunctionSwitch import Gns3VirtualNetworkJunctionSwitch
 from sandbox.SandboxInternalControllerConnection import SandboxInternalControllerConnection
-from vyos.VyNetworkMapper import VyNetworkMapper
-from vyos.VyRouterAuthData import CommandLineAuthData
-from vyos.VyTelnetConnection import VyTelnetConnection
+from device_bundles.vyos.VyNetworkMapper import VyNetworkMapper
+from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
+from device_bundles.vyos.VyTelnetConnection import VyTelnetConnection
 
 
 class SandboxController:

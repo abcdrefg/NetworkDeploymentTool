@@ -1,6 +1,6 @@
 from core.DatabaseConnection import DatabaseConnection
-from vyos.VySSHConnection import VySSHConnection
-from vyos.VyRouterAuthData import CommandLineAuthData
+from device_bundles.vyos.VySSHConnection import VySSHConnection
+from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
 
 
 class DeviceConfigManager:

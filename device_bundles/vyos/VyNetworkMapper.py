@@ -1,6 +1,6 @@
 import ipaddress
 
-from core.DatabaseConnection import DatabaseConnection
+from server.core.DatabaseConnection import DatabaseConnection
 from vyos.VyRouterAuthData import ApiAuthData
 from vyos.VyAPIConnection import VyAPIConnection
 

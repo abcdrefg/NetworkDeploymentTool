@@ -1,0 +1,4 @@
+- Rename SandboxInternalTestController into test_tooling.
+- Create requirements.txt for pip.
+- Create template for device_bundles.
+- Update connections/mappers into generic.

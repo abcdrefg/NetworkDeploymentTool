@@ -1,8 +1,7 @@
 import bson.json_util
 
-from server.vyos.VyAPIConnection import VyAPIConnection
-from server.vyos.VyRouterAuthData import ApiAuthData
-
+from device_bundles.vyos.VyAPIConnection import VyAPIConnection
+from device_bundles.vyos.VyRouterAuthData import ApiAuthData
 
 class TestbedManager:
     def get_devices(self):

@@ -3,8 +3,8 @@ import json
 from flask import Blueprint, request, jsonify
 
 from core.DatabaseConnection import DatabaseConnection
-from vyos.VySSHConnection import VySSHConnection
-from vyos.VyRouterAuthData import CommandLineAuthData
+from device_bundles.vyos.VySSHConnection import VySSHConnection
+from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
 
 device_controller = Blueprint('device_controller', __name__)
 bad_request = {
