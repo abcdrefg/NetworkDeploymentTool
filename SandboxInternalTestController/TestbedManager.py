@@ -1,7 +1,7 @@
 import bson.json_util
 
-from vyos.VyAPIConnection import VyAPIConnection
-from vyos.VyRouterAuthData import ApiAuthData
+from server.vyos.VyAPIConnection import VyAPIConnection
+from server.vyos.VyRouterAuthData import ApiAuthData
 
 
 class TestbedManager:

@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 
 from core.DatabaseConnection import DatabaseConnection
-from SandboxInternalTestController import SandboxInternalTestController
 
 statistics_controller = Blueprint('statistics_controller', __name__)
 
@@ -15,8 +14,9 @@ def get_number_of_devices():
 
 @statistics_controller.route('/getNumberOfUnitTests', methods=['GET'])
 def get_number_of_tests():
-    number_of_test_files = len(SandboxInternalTestController().get_test_files())
-    return str(number_of_test_files)
+    database_conn = DatabaseConnection()
+    number_of_tests = len(list(database_conn.get_unit_tests()))
+    return str(number_of_tests)
 
 
 @statistics_controller.route('/getLastDeploy', methods=['GET'])

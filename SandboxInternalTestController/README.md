@@ -5,6 +5,8 @@ This package contains the `SandboxInternalTestController` component, extracted f
 ## Contents
 
 - `SandboxInternalTestController.py` - Executes and manages active unit test scripts.
+- `TestbedManager.py` - Loads testbed devices from `net_devices.json`.
+- `UnitTestTrigger.py` - Runs test execution flow and writes `test_results.json`.
 - `__init__.py` - Exposes `SandboxInternalTestController` for package imports.
 
 ## Usage

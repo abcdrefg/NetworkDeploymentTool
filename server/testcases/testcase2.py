@@ -1,8 +1,8 @@
-from core.TestbedManager import TestbedManager
+from SandboxInternalTestController.TestbedManager import TestbedManager
 from pyats import aetest, topology
 import sys
 import argparse
-from core.TestbedManager import TestbedManager
+from SandboxInternalTestController.TestbedManager import TestbedManager
 class CommonSetup(aetest.Testcase):
     @aetest.setup
     def connect(self):

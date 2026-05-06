@@ -4,9 +4,7 @@ import tarfile
 from time import sleep
 
 import docker
-
-from SandboxInternalTestController import SandboxInternalTestController
-
+import glob
 
 class SandboxInternalControllerConnection:
     __net_devices_json = "net_devices.json"
@@ -23,12 +21,14 @@ class SandboxInternalControllerConnection:
             self.container = container
         if self.container is None:
             raise Exception("Server container missing")
-        self.unit_test_manager = SandboxInternalTestController()
-        for test_file in self.unit_test_manager.get_test_files():
+        for test_file in self.__get_test_files():
             self.__copy_to(test_file, f'home/TestController/')
 
         self.__set_ip_address(ip_address)
         self.__copy_to(self.__net_devices_json, f'home/TestController')
+
+    def __get_test_files(self):
+        return glob.glob("testcases/*.py")
 
     def __copy_to(self, src, dst):
         tar = tarfile.open(src + '.tar', mode='w')

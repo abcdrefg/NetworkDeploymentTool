@@ -1,5 +1,5 @@
 from pyats import aetest
-from core.TestbedManager import TestbedManager
+from SandboxInternalTestController.TestbedManager import TestbedManager
 class CommonSetup(aetest.Testcase):
     @aetest.setup
     def connect(self):

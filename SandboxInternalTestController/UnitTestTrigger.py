@@ -1,7 +1,7 @@
 import os
 from json import dumps
 
-from core.TestbedManager import TestbedManager
+from SandboxInternalTestController.TestbedManager import TestbedManager
 from SandboxInternalTestController import SandboxInternalTestController
 
 
