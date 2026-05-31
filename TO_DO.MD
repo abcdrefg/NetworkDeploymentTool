@@ -2,3 +2,6 @@
 - Create requirements.txt for pip.
 - Create template for device_bundles.
 - Update connections/mappers into generic.
+- Create dockerfiles.
+- Update all markdowns.
+- Move venv to different place.
