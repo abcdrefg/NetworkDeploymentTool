@@ -24,7 +24,7 @@ class VersionController:
             return bad_request
         vcm = VersionControlManager()
         diffrences = vcm.generate_diff_from_spec_conf(json_data["Id"])
-        return diffrences
+        return jsonify(diffrences)
 
     @version_controller.route('/getVersions', methods=['GET'])
     def get_versions():
@@ -34,9 +34,9 @@ class VersionController:
         for version in versions:
             version_dict = {}
             version_dict["Id"] = str(version["_id"])
-            version_dict["Timestamp"] = version["timestamp"]
+            version_dict["Timestamp"] = str(version["timestamp"])
             versions_list.append(version_dict)
-        return versions_list
+        return jsonify(versions_list)
 
     @version_controller.route('/rollbackToId', methods=['POST'])
     def rollback_to_id():

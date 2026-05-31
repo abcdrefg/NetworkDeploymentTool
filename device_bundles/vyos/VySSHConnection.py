@@ -12,7 +12,7 @@ class VySSHConnection:
           "username": credentials.username,
           "password": credentials.password,
           "port": credentials.port,
-        })
+            })
 
     def get_config_as_commands(self):
         output = self.connection.send_command('show config commands')

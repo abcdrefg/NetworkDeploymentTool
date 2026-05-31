@@ -31,7 +31,7 @@ class ConfigurationController:
                 "name": device["name"],
                 "commands": db_commands
             })
-        return running_confs
+        return jsonify(running_confs)
 
     @configuration_controller.route('/upsertCommands', methods=['PUT'])
     def upsert_commands():

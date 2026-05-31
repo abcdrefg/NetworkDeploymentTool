@@ -26,6 +26,7 @@ class SandboxInternalControllerConnection:
 
         self.__set_ip_address(ip_address)
         self.__copy_to(self.__net_devices_json, f'home/TestController')
+        self.__copy_to('active_tests.json', f'home/TestController')
 
     def __get_test_files(self):
         return glob.glob("testcases/*.py")

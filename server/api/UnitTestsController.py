@@ -65,7 +65,7 @@ def get_unit_tests():
             "testname": unit_test_info["testname"],
             "isActive": unit_test_info["isActive"]
         })
-    return unit_tests_list
+    return jsonify(unit_tests_list)
 
 
 def activate_test(testname):

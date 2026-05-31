@@ -51,7 +51,7 @@ class DeviceAddController:
                     "deviceType": device["deviceType"]
                 }
             )
-        return running_confs
+        return jsonify(running_confs)
 
     @device_controller.route('/getDatabaseConfigs', methods=['GET'])
     def get_conn_configs_from_database():
@@ -59,4 +59,4 @@ class DeviceAddController:
         db_devices = []
         for device in database_conn.get_devices():
             db_devices.append({"name": device["name"], "host": device["host"]})
-        return db_devices
+        return jsonify(db_devices)

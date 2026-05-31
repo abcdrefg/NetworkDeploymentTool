@@ -1,0 +1,4 @@
+# Dependencies for the sandbox test-controller container only.
+pymongo>=4.2.0
+requests>=2.28.0
+pyats[full]>=23.0

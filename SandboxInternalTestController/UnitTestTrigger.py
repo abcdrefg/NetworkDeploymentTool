@@ -6,7 +6,10 @@ from SandboxInternalTestController import SandboxInternalTestController
 
 
 if __name__ == '__main__':
-    os.remove('test_results.json')
+    try:
+        os.remove('test_results.json')
+    except FileNotFoundError:
+        pass
     TestbedManager().get_devices()
     unit_test_manager = SandboxInternalTestController()
     test_results = unit_test_manager.execute()

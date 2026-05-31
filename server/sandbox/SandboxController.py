@@ -11,7 +11,6 @@ from device_bundles.vyos.VyNetworkMapper import VyNetworkMapper
 from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
 from device_bundles.vyos.VyTelnetConnection import VyTelnetConnection
 
-
 class SandboxController:
     def __init__(self):
         self.__gns3_controller = Gns3Controller()

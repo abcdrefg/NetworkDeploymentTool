@@ -5,6 +5,7 @@ from flask import Blueprint, request, jsonify
 from server.core.DatabaseConnection import DatabaseConnection
 from server.core.DeviceConfigManager import DeviceConfigManager
 from server.core.VersionControlManager import VersionControlManager
+from server.sandbox.Gns3Controller import Gns3ConnectionError
 from server.sandbox.SandboxController import SandboxController
 
 deployment_controller = Blueprint('deployment_controller', __name__)
@@ -15,7 +16,7 @@ class DeploymentController:
     def test_configs():
         manager = DeviceConfigManager()
         error_array = manager.test_configs()
-        return error_array
+        return jsonify(error_array)
 
     @deployment_controller.route('/getStatus', methods=['GET'])
     def get_deployment_status():
@@ -84,7 +85,10 @@ class DeploymentController:
 
     @deployment_controller.route('/runTests', methods=['GET'])
     def run_test():
-        sandbox_controller = SandboxController()
+        try:
+            sandbox_controller = SandboxController()
+        except Gns3ConnectionError as exc:
+            return jsonify({'success': False, 'error': str(exc)}), 503
         sandbox_controller.create_sandbox()
         configs_by_router_name = {}
 
@@ -96,4 +100,4 @@ class DeploymentController:
         sandbox_controller.prepare_test_server()
         results = sandbox_controller.execute_tests()
         print(results)
-        return results
+        return jsonify(results)
