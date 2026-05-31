@@ -1,7 +1,7 @@
 from telnetlib import Telnet
 from time import sleep
 
-from vyos.VyRouterAuthData import CommandLineAuthData
+from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
 
 
 class VyTelnetConnection:

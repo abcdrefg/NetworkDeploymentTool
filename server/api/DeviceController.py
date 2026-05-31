@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, request, jsonify
 
-from core.DatabaseConnection import DatabaseConnection
+from server.core.DatabaseConnection import DatabaseConnection
 from device_bundles.vyos.VySSHConnection import VySSHConnection
 from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
 

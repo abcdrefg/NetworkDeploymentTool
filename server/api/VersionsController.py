@@ -2,9 +2,9 @@ import json
 
 from flask import Blueprint, request, jsonify
 
-from core.DatabaseConnection import DatabaseConnection
-from core.DeviceConfigManager import DeviceConfigManager
-from core.VersionControlManager import VersionControlManager
+from server.core.DatabaseConnection import DatabaseConnection
+from server.core.DeviceConfigManager import DeviceConfigManager
+from server.core.VersionControlManager import VersionControlManager
 
 version_controller = Blueprint('version_controller', __name__)
 bad_request = {

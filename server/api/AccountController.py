@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 
-from core.DatabaseConnection import DatabaseConnection
+from server.core.DatabaseConnection import DatabaseConnection
 
 account_controller = Blueprint('account_controller', __name__)
 

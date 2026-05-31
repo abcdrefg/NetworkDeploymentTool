@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from vyos.VyRouterAuthData import ApiAuthData
+from device_bundles.vyos.VyRouterAuthData import ApiAuthData
 
 
 class VyAPIConnection:

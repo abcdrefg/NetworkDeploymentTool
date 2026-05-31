@@ -2,9 +2,40 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
 
+## Prerequisites
+
+- **Node.js 16** (see `.nvmrc`). [nvm](https://github.com/nvm-sh/nvm) is recommended:
+  ```bash
+  nvm install
+  nvm use
+  ```
+- **npm** (included with Node)
+
+For full functionality (login, devices, deployment, etc.), also run from the repo root:
+
+- **Python backend** — `python -m server.app` (see `requirements.txt` in the project root)
+- **MongoDB** on `localhost:27017`
+
+The UI calls the API at `http://127.0.0.1:5000`.
+
+## Installation
+
+From this directory (`frontend-client/`):
+
+```bash
+nvm use          # if using nvm
+npm install --legacy-peer-deps
+```
+
+`--legacy-peer-deps` is required with npm 8+ because of Angular 14 peer dependency resolution.
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```bash
+npm start
+```
+
+Or `ng serve`. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 

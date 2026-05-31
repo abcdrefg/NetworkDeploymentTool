@@ -2,10 +2,10 @@ import json
 
 from flask import Blueprint, request, jsonify
 
-from core.DatabaseConnection import DatabaseConnection
-from core.DeviceConfigManager import DeviceConfigManager
-from core.VersionControlManager import VersionControlManager
-from sandbox.SandboxController import SandboxController
+from server.core.DatabaseConnection import DatabaseConnection
+from server.core.DeviceConfigManager import DeviceConfigManager
+from server.core.VersionControlManager import VersionControlManager
+from server.sandbox.SandboxController import SandboxController
 
 deployment_controller = Blueprint('deployment_controller', __name__)
 

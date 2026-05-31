@@ -1,6 +1,6 @@
 from netmiko import ConnectHandler
 
-from vyos.VyRouterAuthData import CommandLineAuthData
+from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
 
 
 class VySSHConnection:

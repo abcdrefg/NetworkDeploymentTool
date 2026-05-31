@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, request, jsonify
 
-from core.DatabaseConnection import DatabaseConnection
+from server.core.DatabaseConnection import DatabaseConnection
 
 unit_test_controller = Blueprint('unit_test_controller', __name__)
 bad_request = {

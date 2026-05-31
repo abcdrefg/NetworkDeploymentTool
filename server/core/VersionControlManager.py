@@ -3,7 +3,7 @@ import difflib
 import io
 import re
 
-from core.DatabaseConnection import DatabaseConnection
+from server.core.DatabaseConnection import DatabaseConnection
 from device_bundles.vyos.VySSHConnection import VySSHConnection
 from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
 

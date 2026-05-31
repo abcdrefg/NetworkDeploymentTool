@@ -1,8 +1,8 @@
 import ipaddress
 
 from server.core.DatabaseConnection import DatabaseConnection
-from vyos.VyRouterAuthData import ApiAuthData
-from vyos.VyAPIConnection import VyAPIConnection
+from device_bundles.vyos.VyRouterAuthData import ApiAuthData
+from device_bundles.vyos.VyAPIConnection import VyAPIConnection
 
 
 class VyNetworkMapper:

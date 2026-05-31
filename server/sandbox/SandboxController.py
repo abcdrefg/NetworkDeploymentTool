@@ -3,10 +3,10 @@ from time import sleep
 
 from bson.json_util import dumps
 
-from core.DatabaseConnection import DatabaseConnection
-from sandbox.Gns3Controller import Gns3Controller
-from sandbox.Gns3VirtualNetworkJunctionSwitch import Gns3VirtualNetworkJunctionSwitch
-from sandbox.SandboxInternalControllerConnection import SandboxInternalControllerConnection
+from server.core.DatabaseConnection import DatabaseConnection
+from server.sandbox.Gns3Controller import Gns3Controller
+from server.sandbox.Gns3VirtualNetworkJunctionSwitch import Gns3VirtualNetworkJunctionSwitch
+from server.sandbox.SandboxInternalControllerConnection import SandboxInternalControllerConnection
 from device_bundles.vyos.VyNetworkMapper import VyNetworkMapper
 from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
 from device_bundles.vyos.VyTelnetConnection import VyTelnetConnection
