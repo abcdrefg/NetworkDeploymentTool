@@ -1,6 +1,6 @@
 from server.core.DatabaseConnection import DatabaseConnection
-from device_bundles.vyos.VySSHConnection import VySSHConnection
-from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
+from device_bundles import BundleRegistry
+import device_bundles  # noqa: F401 — register device bundles
 
 
 class DeviceConfigManager:
@@ -23,7 +23,7 @@ class DeviceConfigManager:
         connections = []
         for device in DatabaseConnection().get_devices():
             commands = self.configs_by_name[device["name"]]
-            connection = VySSHConnection(CommandLineAuthData(device["host"], device["username"], device["password"]))
+            connection = BundleRegistry.ssh_for_device(device)
             connections.append(connection)
             errors = connection.send_command_set(commands)
             if len(errors) > 0:
@@ -42,7 +42,7 @@ class DeviceConfigManager:
         error_array = []
         for device in DatabaseConnection().get_devices():
             commands = self.configs_by_name[device["name"]]
-            connection = VySSHConnection(CommandLineAuthData(device["host"], device["username"], device["password"]))
+            connection = BundleRegistry.ssh_for_device(device)
             errors = connection.send_command_set(commands)
             if len(errors) > 0:
                 error_dict = {}

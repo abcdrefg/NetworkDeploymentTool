@@ -4,8 +4,8 @@ import io
 import re
 
 from server.core.DatabaseConnection import DatabaseConnection
-from device_bundles.vyos.VySSHConnection import VySSHConnection
-from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
+from device_bundles import BundleRegistry
+import device_bundles  # noqa: F401 — register device bundles
 
 
 class VersionControlManager:
@@ -13,7 +13,7 @@ class VersionControlManager:
         database_conn = DatabaseConnection()
         devices_configs_map = {}
         for device in database_conn.get_devices():
-            devices_configs_map[device["name"]] = VySSHConnection(CommandLineAuthData(device["host"], device["username"], device["password"])).get_config_as_commands()
+            devices_configs_map[device["name"]] = BundleRegistry.ssh_for_device(device).get_config_as_commands()
         version_control_object = {}
         version_control_object["configs"] = devices_configs_map
         version_control_object["timestamp"] = datetime.now()
@@ -23,8 +23,8 @@ class VersionControlManager:
         database_conn = DatabaseConnection()
         running_devices_configs_map = {}
         for device in database_conn.get_devices():
-            running_devices_configs_map[device["name"]] = VySSHConnection(
-                CommandLineAuthData(device["host"], device["username"], device["password"])).get_config_as_commands()
+            running_devices_configs_map[device["name"]] = BundleRegistry.ssh_for_device(
+                device).get_config_as_commands()
         try:
             curr_devices_configs_map = database_conn.get_current_configs()
         except:
@@ -36,8 +36,8 @@ class VersionControlManager:
         database_conn = DatabaseConnection()
         running_devices_configs_map = {}
         for device in database_conn.get_devices():
-            running_devices_configs_map[device["name"]] = VySSHConnection(
-                CommandLineAuthData(device["host"], device["username"], device["password"])).get_config_as_commands()
+            running_devices_configs_map[device["name"]] = BundleRegistry.ssh_for_device(
+                device).get_config_as_commands()
         curr_devices_configs_map = database_conn.get_config_version_by_id(version_id)
         return self.diffrences_generator(curr_devices_configs_map, running_devices_configs_map)
 

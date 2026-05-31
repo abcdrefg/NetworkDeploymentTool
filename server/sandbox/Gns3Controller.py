@@ -5,7 +5,6 @@ import requests
 from time import sleep
 
 TESTBED_SERVER_NAME = 'sandbox-server'
-VYOS_TEMPLATE_NAME = 'VyOs'
 ETHERNET_SWITCH = 'Ethernet switch'
 DEFAULT_GNS3_URL = 'http://localhost:3080'
 
@@ -80,8 +79,8 @@ class Gns3Controller:
     def create_network_switch(self, network):
         return self.create_node(network, ETHERNET_SWITCH)
 
-    def create_vyos_router(self, name):
-        return self.create_node(name, VYOS_TEMPLATE_NAME)
+    def create_router(self, name, template):
+        return self.create_node(name, template)
 
     def create_server_node(self):
         return self.create_node('Test server', TESTBED_SERVER_NAME)

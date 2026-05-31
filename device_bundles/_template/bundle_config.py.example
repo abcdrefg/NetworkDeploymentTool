@@ -1,0 +1,40 @@
+from typing import List, Tuple
+
+from device_bundles.base.bundle_config import (
+    BundleRegistry,
+    ConnectionKind,
+    DeviceBundleConfig,
+    Operation,
+)
+# from device_bundles.example.api_connection import ExampleAPIConnection
+# from device_bundles.example.router_auth import example_api_auth, example_command_line_auth
+# from device_bundles.example.ssh_connection import ExampleSSHConnection
+# from device_bundles.example.telnet_connection import ExampleTelnetConnection
+
+
+def parse_example_interface_ips(output: str) -> List[Tuple[str, str]]:
+    raise NotImplementedError
+
+
+EXAMPLE_BUNDLE = DeviceBundleConfig(
+    device_type="example",
+    gns3_template_name="ExampleRouter",
+    operation_connections={
+        Operation.DEPLOY_CONFIG: ConnectionKind.SSH,
+        Operation.GET_RUNNING_CONFIG: ConnectionKind.SSH,
+        Operation.CHECK_CONNECTION: ConnectionKind.SSH,
+        Operation.SANDBOX_CONSOLE_CONFIG: ConnectionKind.TELNET,
+        Operation.NETWORK_MAPPING: ConnectionKind.API,
+        Operation.UNIT_TESTS: ConnectionKind.API,
+    },
+    parse_interface_ips=parse_example_interface_ips,
+    ssh_connection_class=ExampleSSHConnection,  # noqa: F821
+    telnet_connection_class=ExampleTelnetConnection,  # noqa: F821
+    api_connection_class=ExampleAPIConnection,  # noqa: F821
+    command_line_auth_factory=example_command_line_auth,  # noqa: F821
+    api_auth_factory=example_api_auth,  # noqa: F821
+    sandbox_console_username="admin",
+    sandbox_console_password="admin",
+)
+
+BundleRegistry.register(EXAMPLE_BUNDLE)

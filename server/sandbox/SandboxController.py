@@ -7,15 +7,16 @@ from server.core.DatabaseConnection import DatabaseConnection
 from server.sandbox.Gns3Controller import Gns3Controller
 from server.sandbox.Gns3VirtualNetworkJunctionSwitch import Gns3VirtualNetworkJunctionSwitch
 from server.sandbox.SandboxInternalControllerConnection import SandboxInternalControllerConnection
-from device_bundles.vyos.VyNetworkMapper import VyNetworkMapper
-from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
-from device_bundles.vyos.VyTelnetConnection import VyTelnetConnection
+from device_bundles import BundleRegistry
+from device_bundles.base.network_mapper import NetworkMapper
+import device_bundles  # noqa: F401 — register device bundles
 
 class SandboxController:
     def __init__(self):
         self.__gns3_controller = Gns3Controller()
         self.__db_conn = DatabaseConnection()
-        self.__network_mapper = VyNetworkMapper(self.__db_conn)
+        self.__devices_by_name = {d["name"]: d for d in self.__db_conn.get_devices()}
+        self.__network_mapper = NetworkMapper(self.__db_conn)
         self.__network_switches = {}
         self.__routers = {}
         self.__routers_connection = {}
@@ -38,7 +39,9 @@ class SandboxController:
 
     def create_routers(self, routers):
         for router in routers:
-            self.__routers[router] = self.__gns3_controller.create_vyos_router(router)
+            device = self.__devices_by_name[router]
+            bundle = BundleRegistry.get_for_device(device)
+            self.__routers[router] = self.__gns3_controller.create_router(router, bundle.gns3_template_name)
 
     def link_routers_with_networks(self):
         for link in self.__network_mapper.get_links():
@@ -51,7 +54,10 @@ class SandboxController:
     def write_configs_to_routers(self, configs_by_router_name):
         for router_id in configs_by_router_name:
             router = self.__routers[router_id]
-            VyTelnetConnection(CommandLineAuthData(router.console_host, 'vyos', 'vyos', str(router.console))).load_config_commands(configs_by_router_name[router_id])
+            device = self.__devices_by_name[router_id]
+            BundleRegistry.telnet_for_console(
+                device, router.console_host, str(router.console)
+            ).load_config_commands(configs_by_router_name[router_id])
 
     def prepare_test_server(self):
         self.__create_net_devices_json_files()

@@ -3,8 +3,8 @@ import json
 from flask import Blueprint, request, jsonify
 
 from server.core.DatabaseConnection import DatabaseConnection
-from device_bundles.vyos.VyRouterAuthData import CommandLineAuthData
-from device_bundles.vyos.VySSHConnection import VySSHConnection
+from device_bundles import BundleRegistry
+import device_bundles  # noqa: F401 — register device bundles
 
 configuration_controller = Blueprint('configuration_controller', __name__)
 bad_request = {
@@ -23,8 +23,7 @@ class ConfigurationController:
         for device in database_conn.get_devices():
             db_commands = list(filter(lambda x: x["name"] == device["name"], device_commands))
             if len(db_commands) == 0:
-                db_commands = VySSHConnection(CommandLineAuthData(device["host"], device["username"],
-                                                                  device["password"])).get_config_as_commands()
+                db_commands = BundleRegistry.ssh_for_device(device).get_config_as_commands()
             else:
                 db_commands = db_commands[0]["commands"]
             running_confs.append({
