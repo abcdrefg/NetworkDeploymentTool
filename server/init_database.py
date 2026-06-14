@@ -8,8 +8,10 @@ from werkzeug.security import generate_password_hash
 
 from server.core.DatabaseConnection import DatabaseConnection
 
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "admin1"
+import os
+
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin1")
 
 COLLECTIONS = (
     DatabaseConnection.user_collection,
@@ -24,7 +26,7 @@ DEFAULT_DEPLOYMENT_STATUS = {
     "Deployed": "False",
     "SyntaxTest": "False",
     "UnitTest": "False",
-    "AttachemendPoint": "",
+    "AttachemendPoint": "192.168.18.0/255.255.255.0",
     "ImageName": "sandbox-server",
     "SrvAddress": "10.0.0.2",
 }

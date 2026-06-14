@@ -30,8 +30,6 @@ from time import sleep
 
 TESTBED_SERVER_NAME = 'sandbox-server'
 ETHERNET_SWITCH = 'Ethernet switch'
-DEFAULT_GNS3_URL = 'http://192.168.18.32:3080'
-
 
 class Gns3ConnectionError(Exception):
     pass
@@ -43,7 +41,7 @@ class Gns3Controller:
     __gns3_server = None
 
     def __init__(self):
-        url = os.environ.get('GNS3_URL', DEFAULT_GNS3_URL)
+        url = os.environ.get('GNS3_URL', 'http://localhost:3080')
         user = os.environ.get('GNS3_USER', 'admin')
         password = os.environ.get('GNS3_PASSWORD', 'admin')
 
@@ -121,5 +119,5 @@ class Gns3Controller:
 
     def get_gns3_host(self):
         from urllib.parse import urlparse
-        url = os.environ.get('GNS3_URL', DEFAULT_GNS3_URL)
+        url = os.environ.get('GNS3_URL', 'http://localhost:3080')
         return urlparse(url).hostname or 'localhost'

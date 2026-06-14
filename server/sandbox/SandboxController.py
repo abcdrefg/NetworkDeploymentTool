@@ -69,7 +69,9 @@ class SandboxController:
 
     def prepare_test_server(self):
         self.__create_net_devices_json_files()
-        self.__server_manager = SandboxInternalControllerConnection(self.__db_conn.get_server_image_name(), self.__db_conn.get_server_ip_address(), 'localhost', 5011)
+        sandbox_host = os.environ.get('SANDBOX_HOST', 'localhost')
+        sandbox_port = int(os.environ.get('SANDBOX_PORT', 5011))
+        self.__server_manager = SandboxInternalControllerConnection(self.__db_conn.get_server_image_name(), self.__db_conn.get_server_ip_address(), sandbox_host, sandbox_port)
         try:
             os.remove("net_devices.json")
             os.remove("active_tests.json")

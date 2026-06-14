@@ -6,9 +6,6 @@ from time import sleep
 import docker
 import glob
 
-DEFAULT_DOCKER_URL = 'tcp://192.168.18.32:2375'
-
-
 class SandboxInternalControllerConnection:
     __net_devices_json = "net_devices.json"
     NUM_OF_POLLS = 3
@@ -18,7 +15,7 @@ class SandboxInternalControllerConnection:
 
     def __init__(self, sandbox_server_name, ip_address, telnet_host, telnet_port):
         self.sandbox_server_name = sandbox_server_name
-        docker_host = os.environ.get('DOCKER_HOST', DEFAULT_DOCKER_URL)
+        docker_host = os.environ.get('DOCKER_HOST', 'tcp://localhost:2375')
         self.client = docker.DockerClient(base_url=docker_host)
         self.container = None
         for container in self.client.containers.list():

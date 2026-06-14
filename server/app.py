@@ -21,5 +21,9 @@ running_app.register_blueprint(unit_test_controller, url_prefix='/unitTestContro
 running_app.register_blueprint(statistics_controller, url_prefix='/statisticsService')
 CORS(running_app)
 
+import os
+
 if __name__ == '__main__':
-    running_app.run(host='localhost')
+    host = os.environ.get('FLASK_HOST', 'localhost')
+    port = int(os.environ.get('FLASK_PORT', 5000))
+    running_app.run(host=host, port=port)

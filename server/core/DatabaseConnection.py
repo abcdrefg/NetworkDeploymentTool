@@ -3,8 +3,10 @@ from werkzeug.security import check_password_hash
 from bson.objectid import ObjectId
 
 
+import os
+
 class DatabaseConnection:
-    client = MongoClient("mongodb://localhost:27017/")
+    client = MongoClient(os.environ.get("MONGODB_URI", "mongodb://localhost:27017/"))
     database_name = client["NetworkDeployment"]
 
     user_collection = "Users"
