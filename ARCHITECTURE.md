@@ -10,7 +10,6 @@ The repository is divided into several main directories:
 - **`network/`**: Contains core network logic and utilities used by the server.
 - **`testcases/`**: Contains definitions and configurations for network test cases.
 - **`SandboxInternalTestController/`**: Contains scripts and utilities for internal sandbox testing.
-- **`trigger_tests.py`**: A top-level Python script for triggering test runs.
 
 ## 2. Building and Running the Applications
 
