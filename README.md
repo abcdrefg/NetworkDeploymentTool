@@ -1,4 +1,7 @@
 # NetworkDeploymentTool
+
+Please refer to the [Technical Architecture](ARCHITECTURE.md) for details on the repository structure, how to build/run the application, requirements, and how to add new device types.
+
 Some images from application
 ![SVN](https://user-images.githubusercontent.com/56120539/213875766-6e19519f-b27c-4630-aeb6-c0f56b6941fc.JPG)
 ![TestPage](https://user-images.githubusercontent.com/56120539/213875770-2daa1803-f6a8-4573-aa93-ce8c8b3fbb6d.JPG)

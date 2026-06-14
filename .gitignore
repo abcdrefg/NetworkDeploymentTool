@@ -1,2 +1,8 @@
-**backend/__pycache__
-**backend/.idea
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and virtual environment directories
+.idea/
+venv/

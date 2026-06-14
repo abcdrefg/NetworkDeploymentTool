@@ -1,0 +1,5 @@
+# Rename to __init__.py after copying the template folder.
+from device_bundles.example import bundle_config  # noqa: F401
+from device_bundles.example.bundle_config import EXAMPLE_BUNDLE
+
+__all__ = ["EXAMPLE_BUNDLE", "bundle_config"]
