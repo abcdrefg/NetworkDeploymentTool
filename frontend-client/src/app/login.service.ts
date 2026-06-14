@@ -7,7 +7,7 @@ import { LoginCredentials } from './app.component';
   providedIn: 'root',
 })
 export class LoginService {
-  backendServerAddress = 'http://127.0.0.1:5000';
+  backendServerAddress = 'http://localhost:5000';
   constructor(private httpClient: HttpClient) {}
 
   authenticate(

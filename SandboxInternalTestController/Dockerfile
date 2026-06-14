@@ -35,8 +35,8 @@ RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 COPY device_bundles ./device_bundles
 COPY SandboxInternalTestController ./SandboxInternalTestController
 COPY testcases ./testcases
+COPY SandboxInternalTestController/test_exec.sh ./test_exec.sh
 
-RUN chmod +x ./SandboxInternalTestController/test_exec.sh \
-    && ln -sf SandboxInternalTestController/test_exec.sh ./test_exec.sh
+RUN chmod +x ./test_exec.sh
 
 CMD ["sleep", "infinity"]

@@ -35,6 +35,7 @@ class NetworkMapper:
         networks = {}
 
         for ip in self._router_by_ip:
+            print(ip)
             network = ipaddress.IPv4Network(ip, strict=False)
             network_address = f"{network.network_address}/{network.netmask}"
             if network_address not in networks:

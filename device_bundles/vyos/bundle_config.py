@@ -23,7 +23,12 @@ def parse_vyos_interface_ips(output: str) -> List[Tuple[str, str]]:
         if not line.startswith("eth"):
             continue
         columns = line.split()
-        ip_addresses.append((columns[0], columns[1]))
+        if len(columns) < 2:
+            continue
+        ip_address = columns[1]
+        if ip_address == "-":
+            continue
+        ip_addresses.append((columns[0], ip_address))
     return ip_addresses
 
 
@@ -37,7 +42,7 @@ def vyos_api_auth(host, api_key) -> VyosApiAuthData:
 
 VYOS_BUNDLE = DeviceBundleConfig(
     device_type="vyos",
-    gns3_template_name="VyOs",
+    gns3_template_name="vyos",
     operation_connections={
         Operation.DEPLOY_CONFIG: ConnectionKind.SSH,
         Operation.GET_RUNNING_CONFIG: ConnectionKind.SSH,

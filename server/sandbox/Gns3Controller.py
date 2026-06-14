@@ -1,12 +1,36 @@
 import os
 
 import gns3fy
+
+# Monkeypatch gns3fy to remove Pydantic internal fields from GNS3 REST API payloads.
+# Under Python 3.12 and Pydantic v2, __dict__ of gns3fy objects includes '__pydantic_initialised__'.
+# When passed to GNS3, the server rejects the request with a 400 JSON schema validation error.
+def _clean_pydantic_fields(data):
+    if isinstance(data, dict):
+        return {
+            k: _clean_pydantic_fields(v)
+            for k, v in data.items()
+            if not k.startswith("__pydantic") and k != "__initialised__"
+        }
+    elif isinstance(data, list):
+        return [_clean_pydantic_fields(item) for item in data]
+    return data
+
+_original_http_call = gns3fy.Gns3Connector.http_call
+
+def _patched_http_call(self, method, url, data=None, json_data=None, headers=None, verify=False, params=None):
+    if json_data is not None:
+        json_data = _clean_pydantic_fields(json_data)
+    return _original_http_call(self, method, url, data=data, json_data=json_data, headers=headers, verify=verify, params=params)
+
+gns3fy.Gns3Connector.http_call = _patched_http_call
+
 import requests
 from time import sleep
 
 TESTBED_SERVER_NAME = 'sandbox-server'
 ETHERNET_SWITCH = 'Ethernet switch'
-DEFAULT_GNS3_URL = 'http://localhost:3080'
+DEFAULT_GNS3_URL = 'http://192.168.18.32:3080'
 
 
 class Gns3ConnectionError(Exception):
@@ -20,8 +44,8 @@ class Gns3Controller:
 
     def __init__(self):
         url = os.environ.get('GNS3_URL', DEFAULT_GNS3_URL)
-        user = os.environ.get('GNS3_USER')
-        password = os.environ.get('GNS3_PASSWORD')
+        user = os.environ.get('GNS3_USER', 'admin')
+        password = os.environ.get('GNS3_PASSWORD', 'admin')
 
         if not user or not password:
             raise Gns3ConnectionError(
@@ -33,17 +57,17 @@ class Gns3Controller:
         self.__gns3_server = gns3fy.Gns3Connector(url, user=user, cred=password)
         self.__verify_connection(url)
 
-        project = gns3fy.Project(name='MgrMain', connector=self.__gns3_server)
+        project = gns3fy.Project(name='sandbox-deployment', connector=self.__gns3_server)
         try:
             project.get()
             self.__gns3_server.delete_project(project.project_id)
         except Exception:
             print('Project does not exist')
         try:
-            self.__gns3_server.create_project(name='MgrMain')
+            self.__gns3_server.create_project(name='sandbox-deployment')
         except requests.HTTPError as exc:
-            raise Gns3ConnectionError(f'Failed to create GNS3 project MgrMain: {exc}') from exc
-        self.__project = gns3fy.Project(name='MgrMain', connector=self.__gns3_server)
+            raise Gns3ConnectionError(f'Failed to create GNS3 project sandbox-deployment: {exc}') from exc
+        self.__project = gns3fy.Project(name='sandbox-deployment', connector=self.__gns3_server)
         self.__project.get()
         self.__project_id = self.__project.project_id
 
@@ -94,3 +118,8 @@ class Gns3Controller:
         sleep(1)
         self.__project.start_nodes()
         sleep(5)
+
+    def get_gns3_host(self):
+        from urllib.parse import urlparse
+        url = os.environ.get('GNS3_URL', DEFAULT_GNS3_URL)
+        return urlparse(url).hostname or 'localhost'

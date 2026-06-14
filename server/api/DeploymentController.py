@@ -88,6 +88,7 @@ class DeploymentController:
         try:
             sandbox_controller = SandboxController()
         except Gns3ConnectionError as exc:
+            print(exc)
             return jsonify({'success': False, 'error': str(exc)}), 503
         sandbox_controller.create_sandbox()
         configs_by_router_name = {}

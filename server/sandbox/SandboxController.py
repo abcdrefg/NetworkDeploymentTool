@@ -24,12 +24,18 @@ class SandboxController:
         self.__server_manager = None
 
     def create_sandbox(self):
+        print('### Creating sandbox ###')
         self.__network_mapper.generate_network_map()
+        print('### Map generated ###')
         networks = self.__network_mapper.get_networks().keys()
         self.create_junkction_switches(networks)
+        print('### Junction switches created ###')
         self.create_routers(self.__network_mapper.get_routers())
+        print('### Routers created ###')
         self.link_routers_with_networks()
+        print('### Routers linked ###')
         self.create_test_server()
+        print('### Server created ###')
         self.__gns3_controller.start_topo()
         sleep(30)
 
@@ -55,9 +61,11 @@ class SandboxController:
         for router_id in configs_by_router_name:
             router = self.__routers[router_id]
             device = self.__devices_by_name[router_id]
-            BundleRegistry.telnet_for_console(
-                device, router.console_host, str(router.console)
-            ).load_config_commands(configs_by_router_name[router_id])
+            host = router.console_host
+            if host == "0.0.0.0":
+                host = self.__gns3_controller.get_gns3_host()
+            conn = BundleRegistry.telnet_for_console(device, host, str(router.console))
+            conn.load_config_commands(configs_by_router_name[router_id])
 
     def prepare_test_server(self):
         self.__create_net_devices_json_files()
@@ -66,7 +74,7 @@ class SandboxController:
             os.remove("net_devices.json")
             os.remove("active_tests.json")
         except:
-            print("No data to clean")
+            pass
 
     def __create_net_devices_json_files(self):
         json_object = dumps(self.__db_conn.get_devices())

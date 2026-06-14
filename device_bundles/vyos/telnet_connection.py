@@ -14,18 +14,19 @@ class VyosTelnetConnection(TelnetConnection):
 
     def __init__(self, credentials: VyosCommandLineAuthData):
         super().__init__(credentials)
-        self.connection = Telnet(credentials.host, credentials.port)
+        self.connection = Telnet(credentials.host, credentials.port, timeout=15)
         self.connection.write(b"\n")
-        self.connection.read_until(self.LOGIN_PROMPT.encode("ascii"))
-        self.connection.write(credentials.username.encode("ascii") + b"\n")
-        self.connection.read_until(self.PASSWORD_PROMPT.encode("ascii"))
-        self.connection.write(credentials.password.encode("ascii") + b"\n")
-        sleep(1)
+        sleep(3)
 
     def load_config_commands(self, config_commands):
+        if isinstance(config_commands, str):
+            config_commands = config_commands.splitlines()
         self._enter_config_mode()
         for command in config_commands:
-            self._send_single_command(command)
+            cmd = command.strip()
+            if not cmd:
+                continue
+            self._send_single_command(cmd + "\n")
         self.connection.write(b"\n")
         self._send_commit()
 
